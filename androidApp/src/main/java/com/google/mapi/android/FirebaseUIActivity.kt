@@ -2,14 +2,14 @@
 package com.google.mapi.android
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 
 
-abstract class FirebaseUIActivity : AppCompatActivity() {
+class FirebaseUIActivity : ComponentActivity() {
 
     // [START auth_fui_create_launcher]
     // See: https://developer.android.com/training/basics/intents/result

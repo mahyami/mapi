@@ -47,8 +47,9 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.gson)
     implementation(libs.androidx.appcompat)
-    debugImplementation(libs.compose.ui.tooling)
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.firebaseui:firebase-ui-auth:7.2.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
+    debugImplementation(libs.compose.ui.tooling)
 }
