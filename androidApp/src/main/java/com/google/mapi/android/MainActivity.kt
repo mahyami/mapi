@@ -32,14 +32,19 @@ class MainActivity : ComponentActivity() {
 
         // Redirecting to FirebaseUIActivity immediately.
         // Add conditions here if needed.
-        startActivity(
-            Intent(
-                this@MainActivity,
-                FirebaseUIActivity::class.java
+        if(OAUTH_FEATURE_FLAG) {
+            startActivity(
+                Intent(
+                    this@MainActivity,
+                    FirebaseUIActivity::class.java
+                )
             )
-        )
+        }
         // Consider setting a view or using setContent if this activity should display content.
+    }
 
+    companion object {
+        private const val OAUTH_FEATURE_FLAG = false
     }
 }
 
