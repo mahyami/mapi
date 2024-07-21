@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainViewModel.getPlacesDetails()
+        mainViewModel.getPlacesDetails(this)
         setContent {
             MyApplicationTheme {
                 Surface(
@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
 
         // Redirecting to FirebaseUIActivity immediately.
         // Add conditions here if needed.
-        if(OAUTH_FEATURE_FLAG) {
+        if (OAUTH_FEATURE_FLAG) {
             startActivity(
                 Intent(
                     this@MainActivity,

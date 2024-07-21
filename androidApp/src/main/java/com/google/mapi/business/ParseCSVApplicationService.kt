@@ -26,6 +26,7 @@ class ParseCSVApplicationService {
         return locations
     }
 
+    // TODO:: This will be updated when the user downloads the saved places
     private fun readCsvFromAssets(context: Context, fileName: String): List<String> {
         val assetManager = context.assets
         val inputStreamReader = assetManager.open(fileName).reader()
