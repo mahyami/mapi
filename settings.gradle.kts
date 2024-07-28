@@ -16,4 +16,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "mapi"
 include(":androidApp")
-include(":shared")

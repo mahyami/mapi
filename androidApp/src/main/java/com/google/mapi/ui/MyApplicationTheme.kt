@@ -1,4 +1,4 @@
-package com.google.mapi.android
+package com.google.mapi.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape

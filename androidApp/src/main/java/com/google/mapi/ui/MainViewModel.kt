@@ -1,10 +1,10 @@
-package com.google.mapi.android
+package com.google.mapi.ui
 
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.data.MapsApiService
+import com.google.mapi.data.MapsApiService
 import com.google.mapi.business.ParseCSVApplicationService
 import kotlinx.coroutines.launch
 

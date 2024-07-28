@@ -1,4 +1,4 @@
-package com.google.mapi.android
+package com.google.mapi.data
 
 import com.google.gson.annotations.SerializedName
 

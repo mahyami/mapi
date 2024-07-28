@@ -1,4 +1,4 @@
-package com.data
+package com.google.mapi.data
 
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation

@@ -1,5 +1,5 @@
 
-package com.google.mapi.android
+package com.google.mapi.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,6 +7,7 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.mapi.android.R
 
 
 class FirebaseUIActivity : ComponentActivity() {
