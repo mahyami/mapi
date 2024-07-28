@@ -1,11 +1,12 @@
 package com.google.mapi.data
 
+import com.google.mapi.models.RemotePlace
 import io.ktor.http.appendPathSegments
 
 
 class MapsApiService(private val client: MapsHttpClient = MapsHttpClient()) {
 
-    suspend fun getPlaceDetails(ftid: String): Result<String> {
+    suspend fun getPlaceDetails(ftid: String): Result<RemotePlace> {
         return client.getClient()
             .get {
                 url {

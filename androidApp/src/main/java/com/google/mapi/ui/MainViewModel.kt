@@ -6,12 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.mapi.data.MapsApiService
 import com.google.mapi.business.ParseCSVApplicationService
+import com.google.mapi.domain.PlacesRepository
 import kotlinx.coroutines.launch
 
 
 class MainViewModel(
-    private val mapsApiService: MapsApiService = MapsApiService(),
-    private val parseCSVApplicationService: ParseCSVApplicationService = ParseCSVApplicationService()
+    private val parseCSVApplicationService: ParseCSVApplicationService = ParseCSVApplicationService(),
+    private val placesRepository: PlacesRepository = PlacesRepository()
 ) : ViewModel() {
 
 
@@ -25,10 +26,7 @@ class MainViewModel(
                 .mapNotNull { location ->
                     extractFtIdFromUrl(location.url)
                 }.map { ftId ->
-                    mapsApiService.getPlaceDetails(ftId)
-                        .onSuccess {
-                            Log.d("PLACE:: ", it)
-                        }
+                    placesRepository.getPlaceDetails(ftId)
                 }
         }
     }

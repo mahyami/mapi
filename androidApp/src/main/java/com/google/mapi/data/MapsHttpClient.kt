@@ -10,11 +10,17 @@ import io.ktor.http.URLProtocol
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-class MapsHttpClient() {
+class MapsHttpClient {
     fun getClient() = HttpClient {
         install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
 
         install(Logging) { logger = Logger.SIMPLE }
+
+        install(ContentNegotiation) {
+            json(Json {
+                ignoreUnknownKeys = true
+            })
+        }
 
         defaultRequest {
             url {
