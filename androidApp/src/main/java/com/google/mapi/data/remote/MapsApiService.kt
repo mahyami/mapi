@@ -1,6 +1,5 @@
-package com.google.mapi.data
+package com.google.mapi.data.remote
 
-import com.google.mapi.models.RemotePlace
 import io.ktor.http.appendPathSegments
 
 

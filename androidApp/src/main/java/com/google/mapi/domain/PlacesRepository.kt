@@ -1,7 +1,7 @@
 package com.google.mapi.domain
 
 import android.util.Log
-import com.google.mapi.data.MapsApiService
+import com.google.mapi.data.remote.MapsApiService
 
 class PlacesRepository(
     private val mapsApiService: MapsApiService = MapsApiService(),

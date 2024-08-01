@@ -1,15 +1,16 @@
-package com.google.mapi.models
+package com.google.mapi.data.remote
 
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class RemotePlace(
-    val result: Result,
+    @SerializedName("result") val result: PlaceResult,
     val status: String = ""
 )
 
 @Serializable
-data class Result(
+data class PlaceResult(
     val business_status: String = "",
     val curbside_pickup: Boolean = false,
     val delivery: Boolean = false,

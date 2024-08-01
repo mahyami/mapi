@@ -1,4 +1,4 @@
-package com.google.mapi.data
+package com.google.mapi.data.remote
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -8,20 +8,20 @@ import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 
 suspend inline fun <reified T> HttpClient.get(
-  block: HttpRequestBuilder.() -> Unit = {}
+    block: HttpRequestBuilder.() -> Unit = {}
 ): Result<T> = request {
-  get { block() }
+    get { block() }
 }
 
 suspend inline fun <reified T> request(
-  requester: () -> HttpResponse
+    requester: () -> HttpResponse
 ): Result<T> = try {
-  val httpResponse: HttpResponse = requester()
-  val response: T = httpResponse.body()
-  Result.success(response)
+    val httpResponse: HttpResponse = requester()
+    val response: T = httpResponse.body()
+    Result.success(response)
 } catch (exception: ResponseException) {
-  Result.failure(exception)
+    Result.failure(exception)
 } catch (exception: Throwable) {
-  exception.printStackTrace()
-  Result.failure(exception)
+    exception.printStackTrace()
+    Result.failure(exception)
 }
