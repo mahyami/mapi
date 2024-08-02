@@ -3,6 +3,10 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     id("com.google.gms.google-services") version "4.4.2" apply false
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+
 }
 
 android {
@@ -47,6 +51,13 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.gson)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.room)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.firebaseui:firebase-ui-auth:7.2.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")

@@ -1,9 +1,12 @@
 package com.google.mapi.data.remote
 
 import io.ktor.http.appendPathSegments
+import javax.inject.Inject
 
 
-class MapsApiService(private val client: MapsHttpClient = MapsHttpClient()) {
+class MapsApiService @Inject constructor(
+    private val client: MapsHttpClient
+) {
 
     suspend fun getPlaceDetails(ftid: String): Result<RemotePlace> {
         return client.getClient()

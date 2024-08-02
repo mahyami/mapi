@@ -2,8 +2,9 @@ package com.google.mapi.business
 
 import android.content.Context
 import java.io.BufferedReader
+import javax.inject.Inject
 
-class ParseCSVApplicationService {
+class ParseCSVApplicationService @Inject constructor() {
 
     fun getLocations(context: Context, fileName: String): List<Location> {
         val locations = mutableListOf<Location>()

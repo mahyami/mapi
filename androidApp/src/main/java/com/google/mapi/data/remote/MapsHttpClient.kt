@@ -10,18 +10,12 @@ import io.ktor.client.plugins.logging.SIMPLE
 import io.ktor.http.URLProtocol
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import javax.inject.Inject
 
-class MapsHttpClient {
+class MapsHttpClient @Inject constructor() {
     fun getClient() = HttpClient {
         install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
-
         install(Logging) { logger = Logger.SIMPLE }
-
-        install(ContentNegotiation) {
-            json(Json {
-                ignoreUnknownKeys = true
-            })
-        }
 
         defaultRequest {
             url {

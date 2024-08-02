@@ -1,6 +1,7 @@
 package com.google.mapi
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
-class MapiApplication: Application() {
-}
+@HiltAndroidApp
+class MapiApplication: Application()

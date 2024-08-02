@@ -5,12 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.mapi.business.ParseCSVApplicationService
 import com.google.mapi.domain.PlacesRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class MainViewModel(
-    private val parseCSVApplicationService: ParseCSVApplicationService = ParseCSVApplicationService(),
-    private val placesRepository: PlacesRepository = PlacesRepository()
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val parseCSVApplicationService: ParseCSVApplicationService,
+    private val placesRepository: PlacesRepository
 ) : ViewModel() {
 
 
