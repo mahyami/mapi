@@ -71,5 +71,6 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.okhttp)
     implementation(libs.kotlin.test)
+    implementation("androidx.webkit:webkit:1.8.0")
     debugImplementation(libs.compose.ui.tooling)
 }
