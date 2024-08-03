@@ -1,19 +1,18 @@
 package com.google.mapi.ui
 
 import android.annotation.SuppressLint
-import com.google.mapi.business.PullAndWaitForData
-import com.google.mapi.ui.compose.GreetingScreen
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.webkit.WebView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.google.mapi.business.PullAndWaitForData
+import com.google.mapi.ui.compose.GreetingScreen
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.Call
 import okhttp3.Callback
@@ -30,6 +29,7 @@ class MainActivity : ComponentActivity() {
 
     private val mainViewModel: MainViewModel by viewModels()
     private val client = OkHttpClient()
+
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +43,15 @@ class MainActivity : ComponentActivity() {
                     GreetingScreen { onSyncButtonClick() }
                 }
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val uri: Uri? = intent.data
+        if (uri != null) {
+            Log.d("OATH:: ", uri.toString())
+            handleCallback(uri)
         }
     }
 
@@ -70,13 +79,17 @@ class MainActivity : ComponentActivity() {
             PullAndWaitForData(accessToken!!).getDataUrl(this)
         }
     }
-    fun exchangeCodeForToken(
+
+    private fun exchangeCodeForToken(
         code: String,
         callback: (String?) -> Unit
     ) {
         val formBody = FormBody.Builder()
             .add("code", code)
-            .add("client_id", "1007629705241-20m5rskcp6iqlrrfthrhs5h05pur5oan.apps.googleusercontent.com")
+            .add(
+                "client_id",
+                "1007629705241-20m5rskcp6iqlrrfthrhs5h05pur5oan.apps.googleusercontent.com"
+            )
             .add("client_secret", "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")
             .add("redirect_uri", "https://mapicallbackdomain.com/callback/")
             .add("grant_type", "authorization_code")
