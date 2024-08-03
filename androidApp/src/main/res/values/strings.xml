@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MaPi</string>
+    <string name="title_welcome">Hey there! What are you craving right now? 🌮🍣🍕\n</string>
+    <string name="subtitle_welcome">You\'re just a few clicks away from finding the perfect spot to satisfy your cravings. To get started, click the button below to sync your Google Maps saved places with MaPi.\n</string>
+    <string name="footer_welcome">Let the fun begin! 🎉</string>
+    <string name="button_sync">Sync Google Maps</string>
 </resources>
