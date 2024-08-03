@@ -1,6 +1,6 @@
 package com.google.mapi.data.remote
 
-import com.google.mapi.data.GOOGLE_API_KEY
+//import com.google.mapi.data.GOOGLE_API_KEY
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -21,7 +21,7 @@ class MapsHttpClient @Inject constructor() {
             url {
                 host = "maps.googleapis.com/maps/api"
                 protocol = URLProtocol.HTTPS
-                parameters.append("key", GOOGLE_API_KEY)
+                parameters.append("key", "123")
             }
         }
     }
