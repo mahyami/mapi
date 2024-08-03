@@ -19,7 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.google.mapi.android.R
+import com.google.mapi.R
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -94,7 +94,7 @@ class MainActivity : ComponentActivity() {
 
     companion object {
         private const val OAUTH_FEATURE_FLAG = false
-        private const val WEBVIEW_OAUTH_FEATURE_FLAG = true
+        private const val WEBVIEW_OAUTH_FEATURE_FLAG = false
     }
 }
 
