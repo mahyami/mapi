@@ -10,10 +10,10 @@ plugins {
 }
 
 android {
-    namespace = "com.google.mapi.android"
+    namespace = "com.google.mapi"
     compileSdk = 34
     defaultConfig {
-        applicationId = "com.google.mapi.android"
+        applicationId = "com.google.mapi"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -57,6 +57,8 @@ dependencies {
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+
+    implementation(libs.genai)
 
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.firebaseui:firebase-ui-auth:7.2.0")

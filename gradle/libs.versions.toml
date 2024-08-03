@@ -12,6 +12,7 @@ appcompat = "1.7.0"
 room-version = "2.6.1"
 hilt-version = "2.51.1"
 ksp-version = "2.0.0-1.0.24"
+google-genai-version = "0.9.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -38,6 +39,7 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-version" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-version" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-version" }
+genai = { module = "com.google.ai.client.generativeai:generativeai", version.ref = "google-genai-version" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
