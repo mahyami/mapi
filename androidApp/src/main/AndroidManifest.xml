@@ -15,12 +15,17 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
+                <data android:scheme="https" />
+                <data android:host="ipiyush.com" />
+                <data android:pathPrefix="/mapi" />
             </intent-filter>
         </activity>
         <activity android:name="com.google.mapi.ui.FirebaseUIActivity" />
