@@ -34,6 +34,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         mainViewModel.getPlacesDetails(this)
 
+        setContent {
+            MyApplicationTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    GreetingView("Hey android")
+                }
+            }
+        }
+
         // Redirecting to FirebaseUIActivity immediately.
         // Add conditions here if needed.
         if (OAUTH_FEATURE_FLAG) {
