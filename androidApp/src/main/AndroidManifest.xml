@@ -21,11 +21,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:host="mapicallbackdomain.com"
-                    android:path="/callback"
-                    android:scheme="https" />
-
             </intent-filter>
         </activity>
         <activity android:name="com.google.mapi.ui.FirebaseUIActivity" />
