@@ -72,5 +72,7 @@ dependencies {
     implementation(libs.ktor.client.okhttp)
     implementation(libs.kotlin.test)
     implementation("androidx.webkit:webkit:1.8.0")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2") // For logging
     debugImplementation(libs.compose.ui.tooling)
 }

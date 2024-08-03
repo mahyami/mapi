@@ -1,6 +1,5 @@
 package com.google.mapi.data.remote
 
-//import com.google.mapi.data.GOOGLE_API_KEY
 import com.google.mapi.data.GOOGLE_API_KEY
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation

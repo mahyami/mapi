@@ -2,21 +2,23 @@ package com.google.mapi.business
 
 import android.content.Context
 import java.io.BufferedReader
+import java.io.InputStreamReader
 import javax.inject.Inject
 
 class ParseCSVApplicationService @Inject constructor() {
 
-    fun getLocations(context: Context, fileName: String): List<Location> {
+    fun getLocations(context: Context, defaultFileName: String): List<Location> {
         val locations = mutableListOf<Location>()
-        val csvLines = readCsvFromAssets(context, fileName)
-        csvLines.forEach { line ->
+        val csv = readLatestCsv(context) ?: readCsvFromAssets(context, defaultFileName)
+        val csvReader = BufferedReader(csv)
+        csvReader.forEachLine { line ->
             val contents = line.split(",")
             if (contents.size != 4) {
-                return@forEach
+                return@forEachLine
             }
             val urlString = contents[2]
             if (!urlString.startsWith("https://www.google.com/maps")) {
-                return@forEach
+                return@forEachLine
             }
             val location = Location(
                 name = contents[0],
@@ -24,21 +26,25 @@ class ParseCSVApplicationService @Inject constructor() {
             )
             locations.add(location)
         }
+        csvReader.close()
+        csv.close()
         return locations
     }
 
+
+
     // TODO:: This will be updated when the user downloads the saved places
-    private fun readCsvFromAssets(context: Context, fileName: String): List<String> {
+    private fun readCsvFromAssets(context: Context, fileName: String): InputStreamReader {
         val assetManager = context.assets
-        val inputStreamReader = assetManager.open(fileName).reader()
-        val reader = BufferedReader(inputStreamReader)
+        return assetManager.open(fileName).reader()
+    }
 
-        val result = mutableListOf<String>()
-        reader.forEachLine { line ->
-            result.add(line)
+    private fun readLatestCsv(context: Context): InputStreamReader? {
+        val file = context.filesDir.listFiles()?.find { it.name == "latest.csv" }
+        if (file == null) {
+            return null
         }
-
-        return result
+        return file.reader()
     }
 }
 
