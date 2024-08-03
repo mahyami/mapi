@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1007629705241:android:602e7549c4b6e189a60a88",
         "android_client_info": {
-          "package_name": "com.google.mapi"
+          "package_name": "com.google.mapi.android"
         }
       },
       "oauth_client": [

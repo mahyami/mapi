@@ -13,7 +13,7 @@ android {
     namespace = "com.google.mapi"
     compileSdk = 34
     defaultConfig {
-        applicationId = "com.google.mapi"
+        applicationId = "com.google.mapi.android"
         minSdk = 31
         targetSdk = 34
         versionCode = 1
