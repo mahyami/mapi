@@ -44,11 +44,13 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
     }
 
     override fun onResume() {
         super.onResume()
         val uri: Uri? = intent.data
+        Log.d("OATH:: ", uri.toString())
         if (uri != null) {
             Log.d("OATH:: ", uri.toString())
             handleCallback(uri)
@@ -57,7 +59,7 @@ class MainActivity : ComponentActivity() {
 
 
     private fun onSyncButtonClick() {
-        val redirectUri = "https://mapicallbackdomain.com/callback/"
+        val redirectUri = "https://ipiyush.com/mapi/"
         val takoutApi = "https://www.googleapis.com/auth/dataportability.saved.collections"
         val url = "https://accounts.google.com/o/oauth2/auth?response_type=code" +
                 "&client_id=1007629705241-20m5rskcp6iqlrrfthrhs5h05pur5oan.apps.googleusercontent.com" +
@@ -91,7 +93,7 @@ class MainActivity : ComponentActivity() {
                 "1007629705241-20m5rskcp6iqlrrfthrhs5h05pur5oan.apps.googleusercontent.com"
             )
             .add("client_secret", "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")
-            .add("redirect_uri", "https://mapicallbackdomain.com/callback/")
+            .add("redirect_uri", "https://ipiyush.com/mapi/")
             .add("grant_type", "authorization_code")
             .build()
 
@@ -116,6 +118,7 @@ class MainActivity : ComponentActivity() {
                     }
                 } else {
                     // Handle unsuccessful response
+                    Log.d("MainActivity", "Failed to exchange code for token+${response.body?.string()}")
                     callback(null)
                 }
             }

@@ -42,6 +42,16 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.majorVersion
     }
+    signingConfigs {
+        signingConfigs {
+            getByName("debug") {
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+                storeFile = file(System.getenv("HOME") + "/.android/debug.keystore")
+                storePassword = "android"
+            }
+        }
+    }
 }
 
 dependencies {
@@ -74,5 +84,8 @@ dependencies {
     implementation("androidx.webkit:webkit:1.8.0")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2") // For logging
+    implementation("androidx.credentials:credentials:<latest version>")
+    implementation("androidx.credentials:credentials-play-services-auth:<latest version>")
+    implementation("com.google.android.libraries.identity.googleid:googleid:<latest version>")
     debugImplementation(libs.compose.ui.tooling)
 }
