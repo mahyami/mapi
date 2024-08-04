@@ -7,6 +7,7 @@ import com.google.ai.client.generativeai.type.content
 import com.google.ai.client.generativeai.type.generationConfig
 import com.google.mapi.data.GOOGLE_GEN_AI_KEY
 import com.google.mapi.data.local.PlacesDao
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 class GeminiService @Inject constructor(
@@ -35,14 +36,19 @@ class GeminiService @Inject constructor(
         val places = placesDao.getAllPlaces().toString()
         return "Below, I will provide you with a list of my saved places." +
                 "Then I will tell you what I'm looking for and" +
-                " your job is to choose a place for me from the places I provided you." +
+                " your job is to suggest a up to 3 places for me from the places I provided you." +
                 "If you can't find a place that fits my criteria, you should tell me that" +
                 " there are no perfect matches but suggest a few places that you think" +
                 " are close to what I'm looking for.\n" +
-                places
-
+                "Right now the time is: ${LocalDateTime.now()}. " +
+                "If I want request for open now, you have to check the opening time with my time. \n" +
+                places +
+                "The response should include the name of the place, the google maps url from the place object" +
+                " from the result object. I want it in the following format: " +
+                "{\"gemini_result\":[{\"name\":\"NAME\",\"url\":\"URL\"}]}"
     }
 
+    // TODO:: This is bullshit
     private fun buildSystemInstruction() = content("model") {
         text(
             "Hello! I'm here to help you find the perfect café or restaurant." +
@@ -52,8 +58,9 @@ class GeminiService @Inject constructor(
 
     private fun buildGenerationConfig() = generationConfig {
         temperature = 0.75f
-        topK = 5
-        maxOutputTokens = 300
+        topK = 30
+        topP = 0.5f
+        maxOutputTokens = 1000
         responseMimeType = "application/json"
     }
 }

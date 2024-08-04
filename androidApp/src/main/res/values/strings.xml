@@ -7,4 +7,5 @@
     <string name="button_sync">Sync Google Maps</string>
     <string name="input_placeholder">Tell me about your cravings!</string>
     <string name="button_submit">Submit</string>
+    <string name="maps_url">Show on Google Maps</string>
 </resources>
