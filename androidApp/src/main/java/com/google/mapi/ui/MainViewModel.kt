@@ -1,10 +1,12 @@
 package com.google.mapi.ui
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.ai.client.generativeai.type.asTextOrNull
+import com.google.mapi.business.AuthenticationService
 import com.google.mapi.business.ParseCSVApplicationService
 import com.google.mapi.data.gemini.GeminiService
 import com.google.mapi.domain.PlacesRepository
@@ -18,6 +20,7 @@ class MainViewModel @Inject constructor(
     private val parseCSVApplicationService: ParseCSVApplicationService,
     private val placesRepository: PlacesRepository,
     private val geminiService: GeminiService,
+    private val authenticationService: AuthenticationService,
 ) : ViewModel() {
 
 
@@ -44,6 +47,10 @@ class MainViewModel @Inject constructor(
                     }
                 }
         }
+    }
+
+    fun handleGoogleCallback(context: Context, uri: Uri) {
+        authenticationService.handleCallback(context, uri)
     }
 
     private fun extractFtIdFromUrl(url: String): String? {

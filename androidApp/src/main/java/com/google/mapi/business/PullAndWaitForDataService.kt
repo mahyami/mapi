@@ -13,16 +13,16 @@ import org.json.JSONObject
 import java.io.IOException
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
+import javax.inject.Inject
 
-class PullAndWaitForData constructor(private val accessToken: String) {
+class PullAndWaitForDataService @Inject constructor() {
     private val client = OkHttpClient()
 
-
-    fun init(callback: (String?) -> Unit) {
+    private fun init(accessToken: String, callback: (String?) -> Unit) {
         Log.d("PullAndWaitForData", "Initiating data pull")
         val request = Request.Builder()
             .url("https://dataportability.googleapis.com/v1/portabilityArchive:initiate")
-            .header("Authorization", "Bearer "+ this.accessToken)
+            .header("Authorization", "Bearer $accessToken")
             .post(RequestBody.create(null, "{\"resources\": [\"saved.collections\"]}"))
             .build()
         client.newCall(request).enqueue(object : Callback {
@@ -36,22 +36,25 @@ class PullAndWaitForData constructor(private val accessToken: String) {
                     response.body?.string()?.let {
                         // Parse the response
                         val jsonObject = JSONObject(it)
-                        val accessToken = jsonObject.getString("archiveJobId")
-                        callback(accessToken)
+                        val archiveJobId = jsonObject.getString("archiveJobId")
+                        callback(archiveJobId)
                     }
                 } else {
                     // Handle unsuccessful response
-                    Log.d("PullAndWaitForData", "Failed to initiate data pull+${response.body?.string()}")
+                    Log.d(
+                        "PullAndWaitForData",
+                        "Failed to initiate data pull+${response.body?.string()}"
+                    )
                     callback(null)
                 }
             }
         })
     }
 
-    private fun poll(jobId: String, callback: (Boolean, JSONArray?) -> Unit) {
+    private fun poll(jobId: String, accessToken: String, callback: (Boolean, JSONArray?) -> Unit) {
         val request = Request.Builder()
             .url("https://dataportability.googleapis.com/v1/archiveJobs/$jobId/portabilityArchiveState?alt=json")
-            .header("Authorization", "Bearer "+ this.accessToken)
+            .header("Authorization", "Bearer $accessToken")
             .get()
             .build()
         client.newCall(request).enqueue(object : Callback {
@@ -74,9 +77,11 @@ class PullAndWaitForData constructor(private val accessToken: String) {
                                 // Handle failure
                                 callback(true, null)
                             }
+
                             "COMPLETE" -> {
                                 callback(true, urls)
                             }
+
                             else -> {
                                 // Not finished
                                 callback(false, null)
@@ -85,15 +90,18 @@ class PullAndWaitForData constructor(private val accessToken: String) {
                     }
                 } else {
                     // Handle unsuccessful response
-                    Log.d("PullAndWaitForData", "Failed to poll data pull+${response.body?.string()}")
+                    Log.d(
+                        "PullAndWaitForData",
+                        "Failed to poll data pull+${response.body?.string()}"
+                    )
                     callback(true, null)
                 }
             }
         })
     }
 
-    fun getDataUrl(ctx: Context){
-        init() { jobId ->
+    fun getDataUrl(ctx: Context, accessToken: String) {
+        init(accessToken = accessToken) { jobId ->
             Log.d("PullAndWaitForData", "Data pull initiated with jobid $jobId")
 
             if (jobId != null) {
@@ -101,12 +109,12 @@ class PullAndWaitForData constructor(private val accessToken: String) {
                 var isFinished = false
                 var url: String? = null
                 while (!isFinished) {
-                    poll(jobId) { isCompleted, data ->
+                    poll(jobId = jobId, accessToken) { isCompleted, data ->
                         // Handle the data
                         if (isCompleted) {
                             // Data is ready
                             isFinished = true
-                            if(data != null) {
+                            if (data != null) {
                                 url = data.getString(0)
                             }
                         } else {
@@ -116,14 +124,14 @@ class PullAndWaitForData constructor(private val accessToken: String) {
                     }
                     Thread.sleep(3000)
                 }
-                if(url != null) {
+                if (url != null) {
                     downloadZipAndParse(ctx, url!!)
                 }
             }
         }
     }
 
-    fun downloadZipAndParse(ctx: Context, url: String) {
+    private fun downloadZipAndParse(ctx: Context, url: String) {
         // Download the zip file
         val request = Request.Builder()
             .url(url)
@@ -141,11 +149,10 @@ class PullAndWaitForData constructor(private val accessToken: String) {
                         // Parse the zip file
                         val zis = ZipInputStream(it)
                         val csv = StringBuilder()
-                        var buffer = ByteArray(1024)
-                        var bytesRead: Int
+                        val buffer = ByteArray(1024)
                         var entry: ZipEntry? = zis.nextEntry
                         while (entry != null) {
-                            if(entry.name.endsWith(".csv")) {
+                            if (entry.name.endsWith(".csv")) {
                                 // Parse the CSV file
                                 while (zis.read(buffer) > 0) {
                                     csv.append(String(buffer))
@@ -165,7 +172,10 @@ class PullAndWaitForData constructor(private val accessToken: String) {
                     }
                 } else {
                     // Handle unsuccessful response
-                    Log.d("PullAndWaitForData", "Failed to download zip file+${response.body?.string()}")
+                    Log.d(
+                        "PullAndWaitForData",
+                        "Failed to download zip file+${response.body?.string()}"
+                    )
                 }
             }
         })
