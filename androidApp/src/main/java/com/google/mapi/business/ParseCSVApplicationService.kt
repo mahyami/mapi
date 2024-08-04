@@ -1,15 +1,19 @@
 package com.google.mapi.business
 
 import android.content.Context
+import android.util.Log
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import javax.inject.Inject
 
 class ParseCSVApplicationService @Inject constructor() {
 
-    fun getLocations(context: Context, defaultFileName: String): List<Location> {
+    fun getLocations(context: Context): List<Location> {
         val locations = mutableListOf<Location>()
-        val csv = readLatestCsv(context) ?: readCsvFromAssets(context, defaultFileName)
+        val csv: InputStreamReader = readLatestCsv(context).takeIf { it != null } ?: run {
+            Log.d("ParseCSVApplicationService:: ", "Reading from assets.")
+            readCsvFromAssets(context)
+        }
         val csvReader = BufferedReader(csv)
         csvReader.forEachLine { line ->
             val contents = line.split(",")
@@ -32,9 +36,11 @@ class ParseCSVApplicationService @Inject constructor() {
     }
 
 
-
     // TODO:: This will be updated when the user downloads the saved places
-    private fun readCsvFromAssets(context: Context, fileName: String): InputStreamReader {
+    private fun readCsvFromAssets(
+        context: Context,
+        fileName: String = "food.csv"
+    ): InputStreamReader {
         val assetManager = context.assets
         return assetManager.open(fileName).reader()
     }

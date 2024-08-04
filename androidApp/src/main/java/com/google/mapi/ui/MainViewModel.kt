@@ -28,7 +28,6 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             parseCSVApplicationService.getLocations(
                 context = context,
-                defaultFileName = "food.csv"
             )
                 .take(10) // TODO:: comment
                 .mapNotNull { location ->
