@@ -13,9 +13,7 @@ class GeminiService @Inject constructor(
     private val placesDao: PlacesDao,
 ) {
 
-    private val EXAMPLE_PROMPT = "Suggest something with a cozy atmosphere and good coffee."
-
-    suspend fun sendMessage(prompt: String = EXAMPLE_PROMPT): GenerateContentResponse {
+    suspend fun sendMessage(prompt: String): GenerateContentResponse {
         val model = GenerativeModel(
             modelName = "gemini-1.5-pro",
             apiKey = GOOGLE_GEN_AI_KEY,

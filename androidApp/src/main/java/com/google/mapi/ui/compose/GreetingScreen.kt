@@ -6,7 +6,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -18,7 +23,7 @@ import com.google.mapi.ui.Colors
 import com.google.mapi.ui.MapiTheme
 
 @Composable
-fun GreetingScreen(onButtonClick: () -> Unit) {
+fun GreetingScreen(onSyncButtonClicked: () -> Unit, onSubmitButtonClicked: (String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -47,10 +52,27 @@ fun GreetingScreen(onButtonClick: () -> Unit) {
                 .padding(top = 24.dp, bottom = 24.dp)
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth(),
-            onClick = onButtonClick,
-
-            ) {
+            onClick = onSyncButtonClicked,
+        ) {
             Text(text = stringResource(R.string.button_sync))
+        }
+
+        var inputText by remember { mutableStateOf("") }
+
+        TextField(
+            value = inputText,
+            onValueChange = { inputText = it },
+            label = { Text(stringResource(R.string.input_placeholder)) },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Button(
+            modifier = Modifier
+                .padding(top = 24.dp, bottom = 24.dp)
+                .align(Alignment.CenterHorizontally)
+                .fillMaxWidth(),
+            onClick = { onSubmitButtonClicked(inputText) },
+        ) {
+            Text(text = stringResource(R.string.button_submit))
         }
     }
 }
@@ -59,6 +81,6 @@ fun GreetingScreen(onButtonClick: () -> Unit) {
 @Composable
 fun DefaultPreview() {
     MapiTheme {
-        GreetingScreen({})
+        GreetingScreen({}, {})
     }
 }

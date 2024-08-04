@@ -30,7 +30,14 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    GreetingScreen { onSyncButtonClick() }
+                    GreetingScreen(
+                        onSyncButtonClicked = {
+                            onSyncButtonClick()
+                        },
+                        onSubmitButtonClicked = {
+                            mainViewModel.onSubmitButtonClicked(it)
+                        }
+                    )
                 }
             }
         }

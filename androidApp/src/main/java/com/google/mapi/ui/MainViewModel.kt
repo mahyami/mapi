@@ -29,27 +29,30 @@ class MainViewModel @Inject constructor(
             parseCSVApplicationService.getLocations(
                 context = context,
             )
-                .take(10) // TODO:: comment
+                .take(40) // TODO:: comment
                 .mapNotNull { location ->
                     extractFtIdFromUrl(location.url)
                 }.map { ftId ->
                     placesRepository.getPlaceDetails(ftId)
-                }
-                .let {
-                    geminiService.sendMessage().let { response ->
-                        response.candidates.map {
-                            it.content.parts.map {
-                                Log.d("MAHYA:: ", "Response candidate: ${it.asTextOrNull()}\n")
-                            }
-                        }
-                        Log.d("MAHYA:: ", "Response text: ${response.text}\n")
-                    }
                 }
         }
     }
 
     fun handleGoogleCallback(context: Context, uri: Uri) {
         authenticationService.handleCallback(context, uri)
+    }
+
+     fun onSubmitButtonClicked(prompt: String) {
+         viewModelScope.launch {
+             geminiService.sendMessage(prompt).let { response ->
+                 response.candidates.map {
+                     it.content.parts.map {
+                         Log.d("MAHYA:: ", "Response candidate: ${it.asTextOrNull()}\n")
+                     }
+                 }
+                 Log.d("MAHYA:: ", "Response text: ${response.text}\n")
+             }
+         }
     }
 
     private fun extractFtIdFromUrl(url: String): String? {
