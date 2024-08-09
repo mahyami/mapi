@@ -22,8 +22,6 @@ class AuthenticationService @Inject constructor(
         val state = uri.getQueryParameter("state")
         Log.d("MainActivity", "Code: $code, State: $state")
         exchangeCodeForToken(code!!) { accessToken ->
-            // Handle the access token
-            Log.d("MainActivity", "Access Token: $accessToken")
             pullAndWaitForDataService.getDataUrl(context, requireNotNull(accessToken))
         }
     }
@@ -52,24 +50,17 @@ class AuthenticationService @Inject constructor(
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                // Handle request failure
                 callback(null)
             }
 
             override fun onResponse(call: Call, response: Response) {
                 if (response.isSuccessful) {
                     response.body?.string()?.let {
-                        // Parse the response
                         val jsonObject = JSONObject(it)
                         val accessToken = jsonObject.getString("access_token")
                         callback(accessToken)
                     }
                 } else {
-                    // Handle unsuccessful response
-                    Log.d(
-                        "MainActivity",
-                        "Failed to exchange code for token+${response.body?.string()}"
-                    )
                     callback(null)
                 }
             }
