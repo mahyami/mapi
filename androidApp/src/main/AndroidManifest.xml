@@ -28,6 +28,5 @@
                 <data android:pathPrefix="/mapi" />
             </intent-filter>
         </activity>
-        <activity android:name="com.google.mapi.ui.FirebaseUIActivity" />
     </application>
 </manifest> 

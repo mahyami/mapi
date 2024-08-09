@@ -26,7 +26,7 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<PlacesUiState>(
-        PlacesUiState.Success(places = emptyList())
+        PlacesUiState.Success.Initial
     )
     val uiState: StateFlow<PlacesUiState> = _uiState
 
@@ -52,14 +52,16 @@ class MainViewModel @Inject constructor(
     fun onSubmitButtonClicked(prompt: String) {
         viewModelScope.launch {
             _uiState.update {
-                PlacesUiState.Loading
+                PlacesUiState.Loading(
+                    type = PlacesUiState.Loading.LoadingType.GEMINI_LOADING
+                )
             }
             geminiService.sendMessage(prompt).let { response ->
                 response.text?.let {
                     parseGeminiResultToUiModel(it)
                 }?.let { places ->
                     _uiState.update {
-                        PlacesUiState.Success(places = places)
+                        PlacesUiState.Success.PlacesRecommendation(places = places)
                     }
                 }
             }
