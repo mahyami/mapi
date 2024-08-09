@@ -1,6 +1,5 @@
 package com.google.mapi.domain
 
-import android.util.Log
 import com.google.mapi.converters.toLocalPlace
 import com.google.mapi.data.local.PlacesDao
 import com.google.mapi.data.remote.MapsApiService
@@ -14,11 +13,8 @@ class PlacesRepository @Inject constructor(
         mapsApiService.getPlaceDetails(ftid)
             .onSuccess { remotePlace ->
                 placesDao.insertPlace(remotePlace.toLocalPlace())
-                val placeName = placesDao.getPlaceById(
-                    remotePlace.result.place_id
-                )?.placeResult?.name ?: "UNKNOWN"
-
-                Log.d("MAHYA:: ", "PlaceId: $placeName \n")
             }
     }
+
+    suspend fun getPlacesCount() = placesDao.getPlacesCount()
 }

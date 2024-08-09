@@ -2,10 +2,10 @@
 <resources>
     <string name="app_name">MaPi</string>
     <string name="title_prompt">What are you craving right now?\n</string>
-    <string name="title_welcome">Click to sync your Google Maps saved places! </string>
-    <string name="footer_welcome">Let the fun begin!</string>
-    <string name="button_sync">Sync Google Maps</string>
+    <string name="title_sync_initial">Click to sync your Google Maps saved places!</string>
+    <string name="title_sync_loading">Syncing</string>
+    <string name="title_gemini_resync">RE</string>
+    <string name="button_gemini_go">GO</string>
     <string name="input_placeholder">Tell me about your cravings!</string>
-    <string name="button_submit">Submit</string>
-    <string name="maps_url">Show on Google Maps</string>
+    <string name="maps_url">Google Maps</string>
 </resources>

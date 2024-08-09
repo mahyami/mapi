@@ -26,9 +26,24 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<PlacesUiState>(
-        PlacesUiState.Success.Initial
+        PlacesUiState.Sync.Initial
     )
     val uiState: StateFlow<PlacesUiState> = _uiState
+
+    init {
+        viewModelScope.launch {
+            _uiState.update {
+                PlacesUiState.Sync.Loading
+            }
+            placesRepository.getPlacesCount().let { count ->
+                if (count != 0) {
+                    _uiState.update {
+                        PlacesUiState.Gemini.PlacesRecommendation(emptyList())
+                    }
+                }
+            }
+        }
+    }
 
     private fun getPlacesDetails(context: Context) {
         viewModelScope.launch {
@@ -52,16 +67,14 @@ class MainViewModel @Inject constructor(
     fun onSubmitButtonClicked(prompt: String) {
         viewModelScope.launch {
             _uiState.update {
-                PlacesUiState.Loading(
-                    type = PlacesUiState.Loading.LoadingType.GEMINI_LOADING
-                )
+                PlacesUiState.Gemini.Loading
             }
             geminiService.sendMessage(prompt).let { response ->
                 response.text?.let {
                     parseGeminiResultToUiModel(it)
                 }?.let { places ->
                     _uiState.update {
-                        PlacesUiState.Success.PlacesRecommendation(places = places)
+                        PlacesUiState.Gemini.PlacesRecommendation(places = places)
                     }
                 }
             }

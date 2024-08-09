@@ -13,6 +13,9 @@ interface PlacesDao {
     @Query("SELECT * FROM places")
     suspend fun getAllPlaces(): List<LocalPlace>
 
+    @Query("SELECT COUNT(*) FROM places")
+    suspend fun getPlacesCount(): Int
+
     @Query("DELETE FROM places")
     suspend fun deleteAllPlaces()
 }

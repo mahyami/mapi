@@ -1,15 +1,14 @@
 package com.google.mapi.ui
 
 sealed interface PlacesUiState {
-    sealed interface Success: PlacesUiState {
-        data object Initial : Success
-        data object Synced : Success
-        data class PlacesRecommendation(val places: List<PlaceUiModel>) : Success
+    sealed interface Sync : PlacesUiState {
+        data object Loading : Sync
+        data object Initial : Sync
     }
-    data class Loading(val type: LoadingType) : PlacesUiState {
-        enum class LoadingType {
-            SYNC_LOADING, GEMINI_LOADING
-        }
+
+    sealed interface Gemini : PlacesUiState {
+        data object Loading : Gemini
+        data class PlacesRecommendation(val places: List<PlaceUiModel>) : Gemini
     }
 }
 

@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
                         onSyncButtonClicked = {
                             mainViewModel.onSyncButtonClicked()
                         },
-                        onSubmitButtonClicked = {
+                        onAskGeminiButtonClicked = {
                             mainViewModel.onSubmitButtonClicked(it)
                         },
                         onOpenMapsClicked = {
