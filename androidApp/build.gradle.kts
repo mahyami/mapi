@@ -37,6 +37,16 @@ android {
             name = "GOOGLE_GEN_AI_KEY",
             value = apikeyProperties.getProperty("GOOGLE_GEN_AI_KEY")
         )
+        buildConfigField(
+            type = "String",
+            name = "OAUTH_CLIENT_ID",
+            value = apikeyProperties.getProperty("OAUTH_CLIENT_ID")
+        )
+        buildConfigField(
+            type = "String",
+            name = "OAUTH_CLIENT_SECRET",
+            value = apikeyProperties.getProperty("OAUTH_CLIENT_SECRET")
+        )
     }
     buildFeatures {
         compose = true
@@ -90,9 +100,6 @@ dependencies {
 
     implementation(libs.genai)
 
-    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
-    implementation("com.firebaseui:firebase-ui-auth:7.2.0")
-
     implementation(libs.ktor.client.core)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.ktor.client.logging)
@@ -100,11 +107,7 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.okhttp)
     implementation(libs.kotlin.test)
-    implementation("androidx.webkit:webkit:1.8.0")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2") // For logging
-    implementation("androidx.credentials:credentials:<latest version>")
-    implementation("androidx.credentials:credentials-play-services-auth:<latest version>")
-    implementation("com.google.android.libraries.identity.googleid:googleid:<latest version>")
     debugImplementation(libs.compose.ui.tooling)
 }

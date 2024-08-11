@@ -2,6 +2,8 @@ package com.google.mapi.business
 
 import android.net.Uri
 import android.util.Log
+import com.google.mapi.BuildConfig.OAUTH_CLIENT_ID
+import com.google.mapi.BuildConfig.OAUTH_CLIENT_SECRET
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.FormBody
@@ -36,9 +38,9 @@ class AuthenticationService @Inject constructor() {
             .add("code", code)
             .add(
                 "client_id",
-                "1007629705241-20m5rskcp6iqlrrfthrhs5h05pur5oan.apps.googleusercontent.com"
+                OAUTH_CLIENT_ID
             )
-            .add("client_secret", "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")
+            .add("client_secret", OAUTH_CLIENT_SECRET)
             .add("redirect_uri", "https://ipiyush.com/mapi/")
             .add("grant_type", "authorization_code")
             .build()
