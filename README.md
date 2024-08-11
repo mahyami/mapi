@@ -3,10 +3,10 @@
 
 ## Overview
 
-Do you constantly add new restaurants and cafés to your Google Maps saved places without really trying them out? 
-Or you can't find the correct place from your saved places when you're craving something? 
-If that's the case then we have the perfect solution for you!
-You just need to login to your google account and tell us about your current craving. 
+Do you constantly add new restaurants and cafés to your Google Maps saved places without really trying them out?\
+Or you can't find the correct place from your saved places when you're craving something?\
+If that's the case then we have the perfect solution for you!\
+You just need to login to your google account and tell us about your current craving.\
 We will look into your saved places and find the best place for you! 
 
 
