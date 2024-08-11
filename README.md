@@ -29,7 +29,7 @@ We will look into your saved places and find the best place for you!
     Create the API Key for Maps
 <img width="1502" alt="google_console" src="https://github.com/user-attachments/assets/f4e16c02-89c5-4677-aa27-e13e21b838dd">
 
-4. **Environment Variables**:
+3. **Environment Variables**:
     - Create a `apikey.properties` file in the root directory.
 	    ```
 		GOOGLE_API_KEY="YOUR_KEY"  
@@ -38,6 +38,6 @@ We will look into your saved places and find the best place for you!
    		OAUTH_CLIENT_SECRET="YOUR_KEY"
 	    ```
     - Replace the placeholders with your actual API keys.
-6. **OAuth**:
+4. **OAuth**:
     Please refere to [this](https://github.com/mahyami/mapi/blob/main/oauth.md) doc.
 
