@@ -7,6 +7,7 @@ This document shows you how to setup and get oauth credentials: https://support.
 
 Once you get the credentials, you would need to pick up `client_id`, `client_secret` and fill in the `AuthenticationService.kt`. 
 
-You will also need to make sure, you setup the correct redirect uri, which is publicly accessible domain and verified: https://developer.android.com/training/app-links/verify-android-applinks
+## Get verified deep link
+This app relies on a valid redirect uri that works as deep link too for the app. This allows the redirected page to be captured by the App. For this you will need to make sure that you setup the redirect uri which is publicly accessible domain and verified: https://developer.android.com/training/app-links/verify-android-applinks
 
 And then update the same file `AuthenticationService.kt` with your redirect uri and in the manifest to set up the intent filter to capture your redirect url.
