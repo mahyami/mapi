@@ -3,6 +3,7 @@ package com.google.mapi.data.gemini
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.Content
 import com.google.ai.client.generativeai.type.GenerateContentResponse
+import com.google.ai.client.generativeai.type.TextPart
 import com.google.ai.client.generativeai.type.content
 import com.google.ai.client.generativeai.type.generationConfig
 import com.google.mapi.data.GOOGLE_GEN_AI_KEY
@@ -23,13 +24,21 @@ class GeminiService @Inject constructor(
         )
 
         return model
-            .startChat(history = listOf(buildChatHistory()))
+            .startChat()
             .sendMessage(prompt)
     }
 
-    private suspend fun buildChatHistory(): Content {
-        val knowledgeSource = buildModelKnowledgeSourceFromUserPlaces()
-        return content("user") { text(knowledgeSource) }
+    private suspend fun buildSystemInstruction(): Content {
+        val modelKnowledgeSource = buildModelKnowledgeSourceFromUserPlaces()
+        return content("system") {
+            parts = mutableListOf(
+                TextPart(
+                    "Hello! I'm here to help you find the perfect café or restaurant or any place you are craving from your saved google places list." +
+                            "The user will describe what s.he is looking for and I will find it. "
+                ),
+                TextPart(modelKnowledgeSource)
+            )
+        }
     }
 
     private suspend fun buildModelKnowledgeSourceFromUserPlaces(): String {
@@ -41,25 +50,18 @@ class GeminiService @Inject constructor(
                 " there are no perfect matches but suggest a few places that you think" +
                 " are close to what I'm looking for.\n" +
                 "Right now the time is: ${LocalDateTime.now()}. " +
-                "If I want request for open now, you have to check the opening time with my time. \n" +
-                places +
+                "The city that the user mentions is important in the search criteria." +
+                "If I want request for open now, you have to check the openNow field of the place. If nothing is open, ignore this field. \n" +
+                "Now here is the list of the users places: $places\n" +
                 "The response should include the name of the place, the google maps url from the place object" +
                 " from the result object. I want it in the following format: " +
                 "{\"gemini_result\":[{\"name\":\"NAME\",\"url\":\"URL\"}]}"
     }
 
-    // TODO:: This is bullshit
-    private fun buildSystemInstruction() = content("model") {
-        text(
-            "Hello! I'm here to help you find the perfect café or restaurant." +
-                    " Just tell me what you're looking for and I'll do my best to find it for you."
-        )
-    }
-
     private fun buildGenerationConfig() = generationConfig {
         temperature = 0.75f
-        topK = 30
-        topP = 0.5f
+        topK = 10
+        topP = 0.7f
         maxOutputTokens = 1000
         responseMimeType = "application/json"
     }
