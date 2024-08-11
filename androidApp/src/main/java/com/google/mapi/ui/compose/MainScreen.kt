@@ -186,19 +186,50 @@ private fun GeminiPlacesRecommendation(
                             .width(300.dp)
                             .align(Alignment.CenterHorizontally)
                     ) {
-                        items(items = uiState.places) { place ->
-                            PlaceRow(
-                                place = place,
-                                onOpenMapsClicked = onOpenMapsClicked
-                            )
+                        when (uiState.places) {
+                            is PlacesUiState.Gemini.Places.Found -> {
+                                items(items = uiState.places.items) { place ->
+                                    PlaceRow(
+                                        place = place,
+                                        onOpenMapsClicked = onOpenMapsClicked
+                                    )
+                                }
+                            }
+
+                            PlacesUiState.Gemini.Places.NotFound -> {
+                                item { NothingFoundRow() }
+                            }
                         }
                     }
                 }
             }
         }
-
     }
 }
+
+@Composable
+private fun NothingFoundRow() {
+    Row(
+        modifier = Modifier
+            .padding(top = 8.dp)
+            .background(
+                color = Colors.TransparentWhite,
+                shape = RoundedCornerShape(roundedCornersRadius)
+            )
+    ) {
+        Text(
+            text = stringResource(R.string.nothing_found),
+            style = textStyle.copy(
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(R.font.raleway_semi_bold))
+            ),
+            modifier = Modifier
+                .padding(8.dp)
+                .weight(2f)
+        )
+    }
+}
+
 
 @Composable
 private fun PlaceRow(

@@ -40,7 +40,11 @@ class MainViewModel @Inject constructor(
             placesRepository.getPlacesCount().let { count ->
                 if (count != 0 && _uiState.value !is PlacesUiState.Sync.Loading) {
                     _uiState.update {
-                        PlacesUiState.Gemini.PlacesRecommendation(emptyList())
+                        PlacesUiState.Gemini.PlacesRecommendation(
+                            PlacesUiState.Gemini.Places.Found(
+                                emptyList()
+                            )
+                        )
                     }
                 }
             }
@@ -86,7 +90,11 @@ class MainViewModel @Inject constructor(
                 .collectLatest { placesDetailsReceived ->
                     if (placesDetailsReceived) {
                         _uiState.update {
-                            PlacesUiState.Gemini.PlacesRecommendation(emptyList())
+                            PlacesUiState.Gemini.PlacesRecommendation(
+                                PlacesUiState.Gemini.Places.Found(
+                                    emptyList()
+                                )
+                            )
                         }
                         Log.d("MAHYA:: MainViewModel", "Places details received")
                     } else {
@@ -116,7 +124,13 @@ class MainViewModel @Inject constructor(
                     parseGeminiResultToUiModel(it)
                 }?.let { places ->
                     _uiState.update {
-                        PlacesUiState.Gemini.PlacesRecommendation(places = places)
+                        PlacesUiState.Gemini.PlacesRecommendation(
+                            if (places.isEmpty()) {
+                                PlacesUiState.Gemini.Places.NotFound
+                            } else {
+                                PlacesUiState.Gemini.Places.Found(places)
+                            }
+                        )
                     }
                 }
             }

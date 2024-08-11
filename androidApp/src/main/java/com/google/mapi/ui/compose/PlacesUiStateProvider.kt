@@ -9,17 +9,24 @@ class PlacesUiStateProvider : PreviewParameterProvider<PlacesUiState> {
         PlacesUiState.Sync.Initial,
         PlacesUiState.Sync.Loading,
         PlacesUiState.Gemini.Loading,
-        PlacesUiState.Gemini.PlacesRecommendation(emptyList()),
+        PlacesUiState.Gemini.PlacesRecommendation(PlacesUiState.Gemini.Places.NotFound),
         PlacesUiState.Gemini.PlacesRecommendation(
-            listOf(
-                PlaceUiModel(
-                    name = "Place 1",
-                    url = "",
-                ),
-                PlaceUiModel(
-                    name = "Place 2 has a very veery long name",
-                    url = "",
+            PlacesUiState.Gemini.Places.Found(
+                listOf(
+                    PlaceUiModel(
+                        name = "Place 1",
+                        url = "",
+                    ),
+                    PlaceUiModel(
+                        name = "Place 2 has a very veery long name",
+                        url = "",
+                    )
                 )
+            )
+        ),
+        PlacesUiState.Gemini.PlacesRecommendation(
+            PlacesUiState.Gemini.Places.Found(
+                emptyList()
             )
         )
     )

@@ -8,4 +8,5 @@
     <string name="button_gemini_go">GO</string>
     <string name="input_placeholder">Tell me about your cravings!</string>
     <string name="maps_url">Google Maps</string>
+    <string name="nothing_found">I couldn\'t find anything from your locations that matched your criteria! :( </string>
 </resources>

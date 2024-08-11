@@ -8,7 +8,11 @@ sealed interface PlacesUiState {
 
     sealed interface Gemini : PlacesUiState {
         data object Loading : Gemini
-        data class PlacesRecommendation(val places: List<PlaceUiModel>) : Gemini
+        data class PlacesRecommendation(val places: Places) : Gemini
+        sealed interface Places {
+            data object NotFound : Places
+            data class Found(val items: List<PlaceUiModel>) : Places
+        }
     }
 }
 
