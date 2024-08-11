@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.mapi.BuildConfig
 import com.google.mapi.business.AuthenticationService
 import com.google.mapi.business.GetPlacesIdsApplicationService
 import com.google.mapi.business.TakeoutSavedCollectionsService
@@ -37,7 +38,7 @@ class MainViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             placesRepository.getPlacesCount().let { count ->
-                if (count != 0) {
+                if (count != 0 && _uiState.value !is PlacesUiState.Sync.Loading) {
                     _uiState.update {
                         PlacesUiState.Gemini.PlacesRecommendation(emptyList())
                     }
@@ -87,6 +88,7 @@ class MainViewModel @Inject constructor(
                         _uiState.update {
                             PlacesUiState.Gemini.PlacesRecommendation(emptyList())
                         }
+                        Log.d("MAHYA:: MainViewModel", "Places details received")
                     } else {
                         _uiState.update {
                             PlacesUiState.Sync.Initial
@@ -125,7 +127,7 @@ class MainViewModel @Inject constructor(
         val redirectUri = "https://ipiyush.com/mapi/"
         val takoutApi = "https://www.googleapis.com/auth/dataportability.saved.collections"
         val url = "https://accounts.google.com/o/oauth2/auth?response_type=code" +
-                "&client_id=1007629705241-20m5rskcp6iqlrrfthrhs5h05pur5oan.apps.googleusercontent.com" +
+                "&client_id=${BuildConfig.OAUTH_CLIENT_ID}" +
                 "&redirect_uri=$redirectUri" +
                 "&scope=$takoutApi" +
                 "&state=eJmhKiMS3CX0bbO1aTwaTzM07cULhG" +
