@@ -34,10 +34,12 @@ And then create one for Gemini as well here: ```https://aistudio.google.com/app/
 4. **Environment Variables**:
     - Create a `apikey.properties` file in the root directory.
 	    ```
-	    GOOGLE_API_KEY="YOUR_KEY"  
-		GOOGLE_GEN_AI_KEY = "YOUR_KEY"
+		GOOGLE_API_KEY="YOUR_KEY"  
+		GOOGLE_GEN_AI_KEY ="YOUR_KEY"
+     	OAUTH_CLIENT_ID="YOUR_KEY"
+   		OAUTH_CLIENT_SECRET="YOUR_KEY"
 	    ```
     - Replace the placeholders with your actual API keys.
-5. **OAuth**:
+6. **OAuth**:
     Please refere to [this](https://github.com/mahyami/mapi/blob/main/oauth.md) doc.
 
