@@ -1,12 +1,13 @@
 package com.google.mapi.data.gemini
 
+import com.google.ai.client.generativeai.BuildConfig
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.Content
 import com.google.ai.client.generativeai.type.GenerateContentResponse
 import com.google.ai.client.generativeai.type.TextPart
 import com.google.ai.client.generativeai.type.content
 import com.google.ai.client.generativeai.type.generationConfig
-import com.google.mapi.data.GOOGLE_GEN_AI_KEY
+import com.google.mapi.BuildConfig.GOOGLE_GEN_AI_KEY
 import com.google.mapi.data.local.PlacesDao
 import java.time.LocalDateTime
 import javax.inject.Inject

@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
@@ -9,18 +12,35 @@ plugins {
 
 }
 
+val apikeyPropertiesFile = rootProject.file("apikey.properties")
+val apikeyProperties = Properties()
+apikeyProperties.load(FileInputStream(apikeyPropertiesFile))
+
 android {
     namespace = "com.google.mapi"
     compileSdk = 34
+
     defaultConfig {
         applicationId = "com.google.mapi.android"
         minSdk = 31
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+        buildConfigField(
+            type = "String",
+            name = "GOOGLE_API_KEY",
+            value = apikeyProperties.getProperty("GOOGLE_API_KEY")
+        )
+        buildConfigField(
+            type = "String",
+            name = "GOOGLE_GEN_AI_KEY",
+            value = apikeyProperties.getProperty("GOOGLE_GEN_AI_KEY")
+        )
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.14"
@@ -72,7 +92,6 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.firebaseui:firebase-ui-auth:7.2.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     implementation(libs.ktor.client.core)
     implementation(libs.kotlinx.coroutines.core)
