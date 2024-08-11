@@ -107,7 +107,7 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.okhttp)
     implementation(libs.kotlin.test)
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
-    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2") // For logging
+    implementation(libs.squareup.okhttp)
+    implementation(libs.squareup.logging)
     debugImplementation(libs.compose.ui.tooling)
 }
