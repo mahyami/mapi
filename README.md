@@ -39,5 +39,5 @@ We will look into your saved places and find the best place for you!
 	    ```
     - Replace the placeholders with your actual API keys.
 5. **OAuth**:
-    
+    Please refere to [this](https://github.com/mahyami/mapi/blob/main/oauth.md) doc.
 
