@@ -26,10 +26,10 @@ We will look into your saved places and find the best place for you!
 
 2. **Create your API keys**:
     Go to Google [consoles](https://console.cloud.google.com/apis/credentials).
-    Create two API keys:
-	    a. For the gemini api
-	    b. For the takeout
-<img width="1502" alt="google_console" src="https://github.com/user-attachments/assets/f4e16c02-89c5-4677-aa27-e13e21b838dd">{width=300}
+    Create the API Key for Maps
+<img width="1502" alt="google_console" src="https://github.com/user-attachments/assets/f4e16c02-89c5-4677-aa27-e13e21b838dd">
+
+And then create one for Gemini as well here: ```https://aistudio.google.com/app/apikey```
 
 4. **Environment Variables**:
     - Create a `apikey.properties` file in the root directory.
