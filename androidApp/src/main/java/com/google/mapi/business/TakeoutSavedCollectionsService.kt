@@ -15,10 +15,36 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import javax.inject.Inject
 
-class PullAndWaitForDataService @Inject constructor() {
+class TakeoutSavedCollectionsService @Inject constructor() {
     private val client = OkHttpClient()
 
-    private fun init(accessToken: String, callback: (String?) -> Unit) {
+    fun getTakeoutData(ctx: Context, accessToken: String, successfulCsvSaving: (Boolean) -> Unit) {
+        createRequest(accessToken = accessToken) { jobId ->
+
+            if (jobId != null) {
+                var isFinished = false
+                var url: String? = null
+                while (!isFinished) {
+                    poll(jobId = jobId, accessToken) { isCompleted, data ->
+                        if (isCompleted) {
+                            isFinished = true
+                            if (data != null) {
+                                url = data.getString(0)
+                            }
+                        } else {
+                            Log.d("PullAndWaitForData", "Data not ready yet")
+                        }
+                    }
+                    Thread.sleep(3000)
+                }
+                if (url != null) {
+                    downloadZipAndParse(ctx, url!!, successfulCsvSaving)
+                }
+            }
+        }
+    }
+
+    private fun createRequest(accessToken: String, callback: (String?) -> Unit) {
         Log.d("PullAndWaitForData", "Initiating data pull")
         val request = Request.Builder()
             .url("https://dataportability.googleapis.com/v1/portabilityArchive:initiate")
@@ -27,20 +53,17 @@ class PullAndWaitForDataService @Inject constructor() {
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                // Handle request failure
                 callback(null)
             }
 
             override fun onResponse(call: Call, response: Response) {
                 if (response.isSuccessful) {
                     response.body?.string()?.let {
-                        // Parse the response
                         val jsonObject = JSONObject(it)
                         val archiveJobId = jsonObject.getString("archiveJobId")
                         callback(archiveJobId)
                     }
                 } else {
-                    // Handle unsuccessful response
                     Log.d(
                         "PullAndWaitForData",
                         "Failed to initiate data pull+${response.body?.string()}"
@@ -59,7 +82,6 @@ class PullAndWaitForDataService @Inject constructor() {
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                // Handle request failure
                 Log.d("PullAndWaitForData", "Failed to poll data pull+${e.message}")
                 callback(true, null)
             }
@@ -67,14 +89,12 @@ class PullAndWaitForDataService @Inject constructor() {
             override fun onResponse(call: Call, response: Response) {
                 if (response.isSuccessful) {
                     response.body?.string()?.let {
-                        // Parse the response
                         val jsonObject = JSONObject(it)
                         val state = jsonObject.getString("state")
                         val urls = jsonObject.getJSONArray("urls")
                         Log.d("PullAndWaitForData", "Polling data pull state $state")
                         when (state) {
                             "FAILED" -> {
-                                // Handle failure
                                 callback(true, null)
                             }
 
@@ -83,13 +103,11 @@ class PullAndWaitForDataService @Inject constructor() {
                             }
 
                             else -> {
-                                // Not finished
                                 callback(false, null)
                             }
                         }
                     }
                 } else {
-                    // Handle unsuccessful response
                     Log.d(
                         "PullAndWaitForData",
                         "Failed to poll data pull+${response.body?.string()}"
@@ -100,84 +118,59 @@ class PullAndWaitForDataService @Inject constructor() {
         })
     }
 
-    fun getDataUrl(ctx: Context, accessToken: String) {
-        init(accessToken = accessToken) { jobId ->
-            Log.d("PullAndWaitForData", "Data pull initiated with jobid $jobId")
-
-            if (jobId != null) {
-                // Start polling
-                var isFinished = false
-                var url: String? = null
-                while (!isFinished) {
-                    poll(jobId = jobId, accessToken) { isCompleted, data ->
-                        // Handle the data
-                        if (isCompleted) {
-                            // Data is ready
-                            isFinished = true
-                            if (data != null) {
-                                url = data.getString(0)
-                            }
-                        } else {
-                            // Data is not ready
-                            Log.d("PullAndWaitForData", "Data not ready yet")
-                        }
-                    }
-                    Thread.sleep(3000)
-                }
-                if (url != null) {
-                    downloadZipAndParse(ctx, url!!)
-                }
-            }
-        }
-    }
-
-    private fun downloadZipAndParse(ctx: Context, url: String) {
-        // Download the zip file
+    private fun downloadZipAndParse(
+        ctx: Context,
+        url: String,
+        successfulCsvSaving: (Boolean) -> Unit
+    ) {
         val request = Request.Builder()
             .url(url)
             .get()
             .build()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                // Handle request failure
-                Log.d("PullAndWaitForData", "Failed to download zip file+${e.message}")
-            }
+        client.newCall(request)
+            .enqueue(downloadZipAndParseTakeoutCallback(ctx, successfulCsvSaving))
+    }
 
-            override fun onResponse(call: Call, response: Response) {
-                if (response.isSuccessful) {
-                    response.body?.byteStream()?.let {
-                        // Parse the zip file
-                        val zis = ZipInputStream(it)
-                        val csv = StringBuilder()
-                        val buffer = ByteArray(1024)
-                        var entry: ZipEntry? = zis.nextEntry
-                        while (entry != null) {
-                            if (entry.name.endsWith(".csv")) {
-                                // Parse the CSV file
-                                while (zis.read(buffer) > 0) {
-                                    csv.append(String(buffer))
-                                }
+    private fun downloadZipAndParseTakeoutCallback(
+        ctx: Context,
+        successfulCsvSaving: (Boolean) -> Unit
+    ) = object : Callback {
+        override fun onFailure(call: Call, e: IOException) {
+            Log.d("PullAndWaitForData", "Failed to download zip file+${e.message}")
+        }
+
+        override fun onResponse(call: Call, response: Response) {
+            if (response.isSuccessful) {
+                if (response.body?.byteStream() != null) {
+                    val byteStream = response.body?.byteStream()
+                    val zis = ZipInputStream(byteStream)
+                    val csv = StringBuilder()
+                    val buffer = ByteArray(1024)
+                    var entry: ZipEntry? = zis.nextEntry
+                    while (entry != null) {
+                        if (entry.name.endsWith(".csv")) {
+                            while (zis.read(buffer) > 0) {
+                                csv.append(String(buffer))
                             }
-                            // Parse the entry
-                            zis.closeEntry()
-                            entry = zis.nextEntry
                         }
-//                      // Store the CSV data in the database
-                        ctx.openFileOutput("latest.csv", Context.MODE_PRIVATE).use {
-                            it.write(csv.toString().toByteArray())
-                            Log.d("PullAndWaitForData", "CSV file saved")
-                            // send an event saying the latest.csv updated
-
-                        }
+                        zis.closeEntry()
+                        entry = zis.nextEntry
+                    }
+                    ctx.openFileOutput("latest.csv", Context.MODE_PRIVATE).use {
+                        it.write(csv.toString().toByteArray())
+                        successfulCsvSaving(true)
+                        Log.d("PullAndWaitForData", "CSV file saved")
                     }
                 } else {
-                    // Handle unsuccessful response
-                    Log.d(
-                        "PullAndWaitForData",
-                        "Failed to download zip file+${response.body?.string()}"
-                    )
+                    successfulCsvSaving(false)
                 }
+            } else {
+                Log.d(
+                    "PullAndWaitForData",
+                    "Failed to download zip file+${response.body?.string()}"
+                )
+                successfulCsvSaving(true)
             }
-        })
+        }
     }
 }

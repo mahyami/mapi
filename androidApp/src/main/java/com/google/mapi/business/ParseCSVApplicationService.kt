@@ -12,7 +12,7 @@ class ParseCSVApplicationService @Inject constructor() {
         val locations = mutableListOf<Location>()
         val csv: InputStreamReader = readLatestCsv(context).takeIf { it != null } ?: run {
             Log.d("ParseCSVApplicationService:: ", "Reading from assets.")
-            readCsvFromAssets(context)
+            readDefaultCsvFromAssets(context)
         }
         val csvReader = BufferedReader(csv)
         csvReader.forEachLine { line ->
@@ -36,8 +36,7 @@ class ParseCSVApplicationService @Inject constructor() {
     }
 
 
-    // TODO:: This will be updated when the user downloads the saved places
-    private fun readCsvFromAssets(
+    private fun readDefaultCsvFromAssets(
         context: Context,
         fileName: String = "food.csv"
     ): InputStreamReader {

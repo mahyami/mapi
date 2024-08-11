@@ -2,15 +2,18 @@ package com.google.mapi.ui
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.mapi.business.AuthenticationService
-import com.google.mapi.business.ParseCSVApplicationService
+import com.google.mapi.business.GetPlacesIdsApplicationService
+import com.google.mapi.business.TakeoutSavedCollectionsService
 import com.google.mapi.data.gemini.GeminiService
 import com.google.mapi.domain.PlacesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.json.JSONObject
@@ -19,10 +22,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val parseCSVApplicationService: ParseCSVApplicationService,
+    private val getPlacesIds: GetPlacesIdsApplicationService,
     private val placesRepository: PlacesRepository,
     private val geminiService: GeminiService,
     private val authenticationService: AuthenticationService,
+    private val takeoutSavedCollectionsService: TakeoutSavedCollectionsService,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<PlacesUiState>(
@@ -32,9 +36,6 @@ class MainViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _uiState.update {
-                PlacesUiState.Sync.Loading
-            }
             placesRepository.getPlacesCount().let { count ->
                 if (count != 0) {
                     _uiState.update {
@@ -45,23 +46,62 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun getPlacesDetails(context: Context) {
+    fun onReturnFromOAuth(context: Context, uri: Uri) {
         viewModelScope.launch {
-            parseCSVApplicationService.getLocations(
-                context = context,
-            ).mapNotNull { location ->
-                extractFtIdFromUrl(location.url)
-            }.map { ftId ->
-                placesRepository.getPlaceDetails(ftId)
+            _uiState.update {
+                PlacesUiState.Sync.Loading
+            }
+            authenticationService.authenticate(uri) { accessToken ->
+                takeoutSavedCollectionsService.getTakeoutData(
+                    context,
+                    accessToken
+                ) { takeoutReceived ->
+                    onTakeoutCsvDataReceived(context = context, isSuccess = takeoutReceived)
+                }
             }
         }
     }
 
-    fun handleGoogleCallback(context: Context, uri: Uri) {
-        authenticationService.handleCallback(context, uri)
-            .also {
+    private fun onTakeoutCsvDataReceived(context: Context, isSuccess: Boolean) {
+        viewModelScope.launch {
+            if (isSuccess) {
                 getPlacesDetails(context)
+            } else {
+                _uiState.update {
+                    PlacesUiState.Sync.Initial
+                }
+                emitToastEvent("Takeout data not received")
             }
+        }
+    }
+
+    private fun getPlacesDetails(context: Context) {
+        viewModelScope.launch {
+            _uiState.update {
+                PlacesUiState.Sync.Loading
+            }
+
+            placesRepository.getPlacesDetails(getPlacesIds(context))
+                .collectLatest { placesDetailsReceived ->
+                    if (placesDetailsReceived) {
+                        _uiState.update {
+                            PlacesUiState.Gemini.PlacesRecommendation(emptyList())
+                        }
+                    } else {
+                        _uiState.update {
+                            PlacesUiState.Sync.Initial
+                        }
+                        emitToastEvent("All places details not received")
+                    }
+                }
+        }
+    }
+
+    private fun emitToastEvent(reason: String) {
+        Log.e("MainViewModel::emitToastEvent ", "REASON:: $reason")
+        _uiEvent.update {
+            UiEvent.ShowToast("Failed to get data! Try again")
+        }
     }
 
     fun onSubmitButtonClicked(prompt: String) {
@@ -108,6 +148,7 @@ class MainViewModel @Inject constructor(
     sealed interface UiEvent {
         data class OpenBrowser(val url: String) : UiEvent
         data object Default : UiEvent
+        data class ShowToast(val message: String) : UiEvent
     }
 
     private fun parseGeminiResultToUiModel(response: String): List<PlaceUiModel> {
@@ -123,19 +164,5 @@ class MainViewModel @Inject constructor(
         }
 
         return placeUiModels
-    }
-
-
-    private fun extractFtIdFromUrl(url: String): String? {
-        val sequence = "!4m2!3m1!1s"
-        val index = url.indexOf(sequence)
-
-        return if (index != -1) {
-            val startIndex = index + sequence.length
-            val endIndex = url.indexOf("/", startIndex).takeIf { it != -1 } ?: url.length
-            url.substring(startIndex, endIndex)
-        } else {
-            null
-        }
     }
 }

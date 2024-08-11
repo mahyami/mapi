@@ -1,6 +1,5 @@
 package com.google.mapi.business
 
-import android.content.Context
 import android.net.Uri
 import android.util.Log
 import okhttp3.Call
@@ -13,16 +12,17 @@ import org.json.JSONObject
 import java.io.IOException
 import javax.inject.Inject
 
-class AuthenticationService @Inject constructor(
-    private val pullAndWaitForDataService: PullAndWaitForDataService
-) {
+class AuthenticationService @Inject constructor() {
 
-    fun handleCallback(context: Context, uri: Uri) {
+    fun authenticate(
+        uri: Uri,
+        onAccessToken: (String) -> Unit
+    ) {
         val code = uri.getQueryParameter("code")
         val state = uri.getQueryParameter("state")
         Log.d("MainActivity", "Code: $code, State: $state")
         exchangeCodeForToken(code!!) { accessToken ->
-            pullAndWaitForDataService.getDataUrl(context, requireNotNull(accessToken))
+            onAccessToken(accessToken!!)
         }
     }
 
@@ -48,22 +48,24 @@ class AuthenticationService @Inject constructor(
             .post(formBody)
             .build()
 
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                callback(null)
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                if (response.isSuccessful) {
-                    response.body?.string()?.let {
-                        val jsonObject = JSONObject(it)
-                        val accessToken = jsonObject.getString("access_token")
-                        callback(accessToken)
-                    }
-                } else {
+        client.newCall(request).enqueue(
+            object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
                     callback(null)
                 }
+
+                override fun onResponse(call: Call, response: Response) {
+                    if (response.isSuccessful) {
+                        response.body?.string()?.let {
+                            val jsonObject = JSONObject(it)
+                            val accessToken = jsonObject.getString("access_token")
+                            callback(accessToken)
+                        }
+                    } else {
+                        callback(null)
+                    }
+                }
             }
-        })
+        )
     }
 }

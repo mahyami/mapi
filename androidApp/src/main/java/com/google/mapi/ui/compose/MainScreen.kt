@@ -57,7 +57,7 @@ import com.google.mapi.ui.PlacesUiState
 import kotlinx.coroutines.delay
 
 @Composable
-fun GreetingScreen(
+fun MainScreen(
     onSyncButtonClicked: () -> Unit,
     onAskGeminiButtonClicked: (String) -> Unit,
     onOpenMapsClicked: (String) -> Unit,
@@ -375,7 +375,7 @@ fun DefaultPreview(
 
 ) {
     MapiTheme {
-        GreetingScreen(
+        MainScreen(
             onSyncButtonClicked = {},
             onAskGeminiButtonClicked = {},
             onOpenMapsClicked = {},

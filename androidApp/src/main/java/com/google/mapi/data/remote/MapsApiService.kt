@@ -8,12 +8,12 @@ class MapsApiService @Inject constructor(
     private val client: MapsHttpClient
 ) {
 
-    suspend fun getPlaceDetails(ftid: String): Result<RemotePlace> {
+    suspend fun getPlaceDetails(id: String): Result<RemotePlace> {
         return client.getClient()
             .get {
                 url {
                     appendPathSegments(DETAILS_PATH)
-                    parameters.append(PARAM_FTID, ftid)
+                    parameters.append(PARAM_FTID, id)
                 }
             }
     }
