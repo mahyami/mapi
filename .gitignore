@@ -9,3 +9,4 @@ captures
 local.properties
 xcuserdata
 apikey.properties
+androidApp/google-services.json
