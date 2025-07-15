@@ -1,0 +1,423 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 17179869184 bytes. Error detail: committing reserved memory.
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   This process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+#   JVM is running with Zero Based Compressed Oops mode in which the Java heap is
+#     placed in the first 32GB address space. The Java Heap base address is the
+#     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
+#     to set the Java Heap base and to place the Java Heap above 32GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (os_linux.cpp:2829), pid=1545, tid=1546
+#
+# JRE version:  (21.0.7+6) (build )
+# Java VM: OpenJDK 64-Bit Server VM (21.0.7+6-LTS, mixed mode, sharing, tiered, compressed oops, compressed class ptrs, g1 gc, linux-amd64)
+# Core dump will be written. Default location: /workspace/core
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: --add-modules=ALL-SYSTEM --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/sun.nio.fs=ALL-UNNAMED -Declipse.application=org.eclipse.jdt.ls.core.id1 -Dosgi.bundles.defaultStartLevel=4 -Declipse.product=org.eclipse.jdt.ls.core.product -Djava.import.generatesMetadataFilesAtProjectRoot=false -DDetectVMInstallationsJob.disabled=true -Dfile.encoding=utf8 -Xlog:disable -Xmx16G -Xms16G -javaagent:/home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/lombok/lombok-1.18.39-4050.jar /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/server/plugins/org.eclipse.equinox.launcher_1.7.0.v20250519-0528.jar -configuration /home/ubuntu/.cursor-server/data/User/globalStorage/redhat.java/1.44.2025071108/config_ss_linux -data /home/ubuntu/.cursor-server/data/User/workspaceStorage/dc280d672a881ce53630fde44a881223/redhat.java/ss_ws --pipe=/tmp/lsp-25612ff36b8deb18730005f97f5fb90a.sock
+
+Host: Intel(R) Xeon(R) Processor, 4 cores, 15G, Ubuntu 25.04
+Time: Tue Jul 15 09:49:59 2025 UTC elapsed time: 0.005073 seconds (0d 0h 0m 0s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00007f26e002a6d0):  JavaThread "Unknown thread" [_thread_in_vm, id=1546, stack(0x00007f26e4afd000,0x00007f26e4bfd000) (1024K)]
+
+Stack: [0x00007f26e4afd000,0x00007f26e4bfd000],  sp=0x00007f26e4bfb480,  free space=1017k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [libjvm.so+0x1004a18]  VMError::report_and_die(int, char const*, char const*, __va_list_tag*, Thread*, unsigned char*, void*, void*, char const*, int, unsigned long)+0x2b8  (os_linux.cpp:2829)
+V  [libjvm.so+0x100547d]
+V  [libjvm.so+0x6bb8bf]
+V  [libjvm.so+0xd01544]  os::pd_commit_memory_or_exit(char*, unsigned long, unsigned long, bool, char const*)+0xd4
+V  [libjvm.so+0xcfa9bd]  os::commit_memory_or_exit(char*, unsigned long, unsigned long, bool, char const*)+0x1d
+V  [libjvm.so+0x8152fb]  G1PageBasedVirtualSpace::commit(unsigned long, unsigned long)+0xfb
+V  [libjvm.so+0x82b41f]  G1RegionsLargerThanCommitSizeMapper::commit_regions(unsigned int, unsigned long, WorkerThreads*)+0x9f
+V  [libjvm.so+0x8bad15]  HeapRegionManager::commit_regions(unsigned int, unsigned long, WorkerThreads*)+0x55
+V  [libjvm.so+0x8bc982]  HeapRegionManager::expand(unsigned int, unsigned int, WorkerThreads*)+0x32
+V  [libjvm.so+0x8bcbae]  HeapRegionManager::expand_by(unsigned int, WorkerThreads*)+0x7e
+V  [libjvm.so+0x7cf7cf]  G1CollectedHeap::expand(unsigned long, WorkerThreads*, double*)+0xff
+V  [libjvm.so+0x7cfde4]  G1CollectedHeap::initialize()+0x5c4
+V  [libjvm.so+0xfa6d76]  universe_init()+0xd6
+V  [libjvm.so+0x8db2d7]  init_globals()+0x37
+V  [libjvm.so+0xf86085]  Threads::create_vm(JavaVMInitArgs*, bool*)+0x2b5
+V  [libjvm.so+0x9b408f]  JNI_CreateJavaVM+0x4f
+C  [libjli.so+0x970b]  JavaMain+0x8b
+C  [libjli.so+0xd259]  ThreadJavaMain+0x9
+C  [libc.so.6+0xa2ef1]
+
+---------------  P R O C E S S  ---------------
+
+Threads class SMR info:
+_java_thread_list=0x00007f26e6264cc0, length=0, elements={
+}
+
+Java Threads: ( => current thread )
+Total: 0
+
+Other Threads:
+  0x00007f26e0055810 WorkerThread "GC Thread#0"                     [id=1547, stack(0x00007f26e42b8000,0x00007f26e43b8000) (1024K)]
+  0x00007f26e0066ea0 ConcurrentGCThread "G1 Main Marker"            [id=1548, stack(0x00007f26e41b7000,0x00007f26e42b7000) (1024K)]
+  0x00007f26e0067ea0 WorkerThread "G1 Conc#0"                       [id=1549, stack(0x00007f26e40b6000,0x00007f26e41b6000) (1024K)]
+
+[error occurred during error reporting (printing all threads), id 0xb, SIGSEGV (0xb) at pc=0x00007f26e54e1720]
+VM state: not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x00007f26e623ebd0] Heap_lock - owner thread: 0x00007f26e002a6d0
+
+Heap address: 0x0000000400000000, size: 16384 MB, Compressed Oops mode: Zero based, Oop shift amount: 3
+
+CDS archive(s) mapped at: [0x0000000000000000-0x0000000000000000-0x0000000000000000), size 0, SharedBaseAddress: 0x0000000800000000, ArchiveRelocationMode: 1.
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 0, Narrow klass range: 0x0
+
+GC Precious Log:
+ CardTable entry size: 512
+ Card Set container configuration: InlinePtr #cards 4 size 8 Array Of Cards #cards 64 size 144 Howl #buckets 8 coarsen threshold 14745 Howl Bitmap #cards 2048 size 272 coarsen threshold 1843 Card regions per heap region 1 cards per card region 16384
+
+Heap:
+ garbage-first heap   total 0K, used 0K [0x0000000400000000, 0x0000000800000000)
+  region size 8192K, 0 young (0K), 0 survivors (0K)
+
+[error occurred during error reporting (printing heap information), id 0xb, SIGSEGV (0xb) at pc=0x00007f26e5aa559a]
+GC Heap History (0 events):
+No events
+
+Dll operation events (1 events):
+Event: 0.002 Loaded shared library /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/libjava.so
+
+Deoptimization events (0 events):
+No events
+
+Classes loaded (0 events):
+No events
+
+Classes unloaded (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+ZGC Phase Switch (0 events):
+No events
+
+VM Operations (0 events):
+No events
+
+Memory protections (1 events):
+Event: 0.002 Protecting memory [0x00007f26e4afd000,0x00007f26e4b01000] with protection modes 0
+
+Nmethod flushes (0 events):
+No events
+
+Events (0 events):
+No events
+
+
+Dynamic libraries:
+400000000-800000000 ---p 00000000 00:00 0 
+55c7f57e4000-55c7f57e5000 r-xp 00000000 00:36 684830                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/bin/java
+55c7f57e6000-55c7f57e7000 r--p 00001000 00:36 684830                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/bin/java
+55c7f57e7000-55c7f57e8000 rw-p 00002000 00:36 684830                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/bin/java
+55c8063cd000-55c806414000 rw-p 00000000 00:00 0                          [heap]
+7f26aa000000-7f26ac021000 rw-p 00000000 00:00 0 
+7f26ac021000-7f26b0000000 ---p 00000000 00:00 0 
+7f26b0000000-7f26b0021000 rw-p 00000000 00:00 0 
+7f26b0021000-7f26b4000000 ---p 00000000 00:00 0 
+7f26b4000000-7f26b4021000 rw-p 00000000 00:00 0 
+7f26b4021000-7f26b8000000 ---p 00000000 00:00 0 
+7f26b9593000-7f26b9e00000 rw-p 00000000 00:00 0 
+7f26b9e00000-7f26cde00000 ---p 00000000 00:00 0 
+7f26cde00000-7f26ce070000 rwxp 00000000 00:00 0 
+7f26ce070000-7f26d5337000 ---p 00000000 00:00 0 
+7f26d5337000-7f26d55a7000 rwxp 00000000 00:00 0 
+7f26d55a7000-7f26d58c8000 ---p 00000000 00:00 0 
+7f26d58c8000-7f26d5b38000 rwxp 00000000 00:00 0 
+7f26d5b38000-7f26dce00000 ---p 00000000 00:00 0 
+7f26dce32000-7f26e0000000 r--s 00000000 00:36 685233                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/modules
+7f26e0000000-7f26e00a3000 rw-p 00000000 00:00 0 
+7f26e00a3000-7f26e4000000 ---p 00000000 00:00 0 
+7f26e40b5000-7f26e40b6000 ---p 00000000 00:00 0 
+7f26e40b6000-7f26e41b6000 rw-p 00000000 00:00 0 
+7f26e41b6000-7f26e41b7000 ---p 00000000 00:00 0 
+7f26e41b7000-7f26e42b7000 rw-p 00000000 00:00 0 
+7f26e42b7000-7f26e42b8000 ---p 00000000 00:00 0 
+7f26e42b8000-7f26e43b8000 rw-p 00000000 00:00 0 
+7f26e43b8000-7f26e48c8000 rw-p 00000000 00:00 0 
+7f26e48c8000-7f26e49ae000 ---p 00000000 00:00 0 
+7f26e49ae000-7f26e49b3000 rw-p 00000000 00:00 0 
+7f26e49b3000-7f26e4a99000 ---p 00000000 00:00 0 
+7f26e4a99000-7f26e4a9e000 rw-p 00000000 00:00 0 
+7f26e4a9e000-7f26e4aa5000 ---p 00000000 00:00 0 
+7f26e4aa5000-7f26e4aad000 rw-s 00000000 00:36 818549                     /tmp/hsperfdata_ubuntu/1545
+7f26e4aad000-7f26e4acd000 r-xp 00000000 00:36 685209                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/libjava.so
+7f26e4acd000-7f26e4ace000 ---p 00020000 00:36 685209                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/libjava.so
+7f26e4ace000-7f26e4acf000 r--p 00020000 00:36 685209                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/libjava.so
+7f26e4acf000-7f26e4ad0000 rw-p 00021000 00:36 685209                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/libjava.so
+7f26e4ad0000-7f26e4ad1000 rw-p 00000000 00:00 0 
+7f26e4ad1000-7f26e4adb000 r-xp 00000000 00:36 685204                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/libinstrument.so
+7f26e4adb000-7f26e4adc000 ---p 0000a000 00:36 685204                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/libinstrument.so
+7f26e4adc000-7f26e4add000 r--p 0000a000 00:36 685204                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/libinstrument.so
+7f26e4add000-7f26e4ade000 rw-p 0000b000 00:36 685204                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/libinstrument.so
+7f26e4ade000-7f26e4af9000 r-xp 00000000 00:36 685213                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/libjimage.so
+7f26e4af9000-7f26e4afa000 ---p 0001b000 00:36 685213                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/libjimage.so
+7f26e4afa000-7f26e4afc000 r--p 0001b000 00:36 685213                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/libjimage.so
+7f26e4afc000-7f26e4afd000 rw-p 0001d000 00:36 685213                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/libjimage.so
+7f26e4afd000-7f26e4b01000 ---p 00000000 00:00 0 
+7f26e4b01000-7f26e4bfd000 rw-p 00000000 00:00 0 
+7f26e4bfd000-7f26e4c0e000 r--p 00000000 00:36 2191                       /usr/lib/x86_64-linux-gnu/libm.so.6
+7f26e4c0e000-7f26e4c94000 r-xp 00011000 00:36 2191                       /usr/lib/x86_64-linux-gnu/libm.so.6
+7f26e4c94000-7f26e4cf2000 r--p 00097000 00:36 2191                       /usr/lib/x86_64-linux-gnu/libm.so.6
+7f26e4cf2000-7f26e4cf3000 r--p 000f5000 00:36 2191                       /usr/lib/x86_64-linux-gnu/libm.so.6
+7f26e4cf3000-7f26e4cf4000 rw-p 000f6000 00:36 2191                       /usr/lib/x86_64-linux-gnu/libm.so.6
+7f26e4cf4000-7f26e4cf5000 r--p 00000000 00:36 2226                       /usr/lib/x86_64-linux-gnu/librt.so.1
+7f26e4cf5000-7f26e4cf6000 r-xp 00001000 00:36 2226                       /usr/lib/x86_64-linux-gnu/librt.so.1
+7f26e4cf6000-7f26e4cf7000 r--p 00002000 00:36 2226                       /usr/lib/x86_64-linux-gnu/librt.so.1
+7f26e4cf7000-7f26e4cf8000 r--p 00002000 00:36 2226                       /usr/lib/x86_64-linux-gnu/librt.so.1
+7f26e4cf8000-7f26e4cf9000 rw-p 00003000 00:36 2226                       /usr/lib/x86_64-linux-gnu/librt.so.1
+7f26e4cf9000-7f26e6108000 r-xp 00000000 00:36 685245                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/server/libjvm.so
+7f26e6108000-7f26e6109000 ---p 0140f000 00:36 685245                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/server/libjvm.so
+7f26e6109000-7f26e61dd000 r--p 0140f000 00:36 685245                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/server/libjvm.so
+7f26e61dd000-7f26e620d000 rw-p 014e3000 00:36 685245                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/server/libjvm.so
+7f26e620d000-7f26e6275000 rw-p 00000000 00:00 0 
+7f26e6275000-7f26e629d000 r--p 00000000 00:36 2155                       /usr/lib/x86_64-linux-gnu/libc.so.6
+7f26e629d000-7f26e6433000 r-xp 00028000 00:36 2155                       /usr/lib/x86_64-linux-gnu/libc.so.6
+7f26e6433000-7f26e6482000 r--p 001be000 00:36 2155                       /usr/lib/x86_64-linux-gnu/libc.so.6
+7f26e6482000-7f26e6486000 r--p 0020c000 00:36 2155                       /usr/lib/x86_64-linux-gnu/libc.so.6
+7f26e6486000-7f26e6488000 rw-p 00210000 00:36 2155                       /usr/lib/x86_64-linux-gnu/libc.so.6
+7f26e6488000-7f26e6495000 rw-p 00000000 00:00 0 
+7f26e6495000-7f26e6496000 r--p 00000000 00:36 2171                       /usr/lib/x86_64-linux-gnu/libdl.so.2
+7f26e6496000-7f26e6497000 r-xp 00001000 00:36 2171                       /usr/lib/x86_64-linux-gnu/libdl.so.2
+7f26e6497000-7f26e6498000 r--p 00002000 00:36 2171                       /usr/lib/x86_64-linux-gnu/libdl.so.2
+7f26e6498000-7f26e6499000 r--p 00002000 00:36 2171                       /usr/lib/x86_64-linux-gnu/libdl.so.2
+7f26e6499000-7f26e649a000 rw-p 00003000 00:36 2171                       /usr/lib/x86_64-linux-gnu/libdl.so.2
+7f26e649a000-7f26e649b000 r--p 00000000 00:36 2224                       /usr/lib/x86_64-linux-gnu/libpthread.so.0
+7f26e649b000-7f26e649c000 r-xp 00001000 00:36 2224                       /usr/lib/x86_64-linux-gnu/libpthread.so.0
+7f26e649c000-7f26e649d000 r--p 00002000 00:36 2224                       /usr/lib/x86_64-linux-gnu/libpthread.so.0
+7f26e649d000-7f26e649e000 r--p 00002000 00:36 2224                       /usr/lib/x86_64-linux-gnu/libpthread.so.0
+7f26e649e000-7f26e649f000 rw-p 00003000 00:36 2224                       /usr/lib/x86_64-linux-gnu/libpthread.so.0
+7f26e64a2000-7f26e64a3000 ---p 00000000 00:00 0 
+7f26e64a3000-7f26e64a4000 r--p 00000000 00:00 0 
+7f26e64a4000-7f26e64a5000 ---p 00000000 00:00 0 
+7f26e64a5000-7f26e64be000 r-xp 00000000 00:36 685214                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/libjli.so
+7f26e64be000-7f26e64bf000 r--p 00018000 00:36 685214                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/libjli.so
+7f26e64bf000-7f26e64c0000 rw-p 00019000 00:36 685214                     /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/jre/21.0.7-linux-x86_64/lib/libjli.so
+7f26e64c0000-7f26e64c2000 rw-p 00000000 00:00 0 
+7f26e64c2000-7f26e64c6000 r--p 00000000 00:00 0                          [vvar]
+7f26e64c6000-7f26e64c8000 r-xp 00000000 00:00 0                          [vdso]
+7f26e64c8000-7f26e64c9000 r--p 00000000 00:36 2133                       /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7f26e64c9000-7f26e64f7000 r-xp 00001000 00:36 2133                       /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7f26e64f7000-7f26e6502000 r--p 0002f000 00:36 2133                       /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7f26e6502000-7f26e6504000 r--p 0003a000 00:36 2133                       /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7f26e6504000-7f26e6505000 rw-p 0003c000 00:36 2133                       /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7f26e6505000-7f26e6506000 rw-p 00000000 00:00 0 
+7ffdfb766000-7ffdfb787000 rw-p 00000000 00:00 0                          [stack]
+ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0                  [vsyscall]
+Total number of mappings: 98
+
+
+VM Arguments:
+jvm_args: --add-modules=ALL-SYSTEM --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/sun.nio.fs=ALL-UNNAMED -Declipse.application=org.eclipse.jdt.ls.core.id1 -Dosgi.bundles.defaultStartLevel=4 -Declipse.product=org.eclipse.jdt.ls.core.product -Djava.import.generatesMetadataFilesAtProjectRoot=false -DDetectVMInstallationsJob.disabled=true -Dfile.encoding=utf8 -Xlog:disable -Xmx16G -Xms16G -javaagent:/home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/lombok/lombok-1.18.39-4050.jar 
+java_command: /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/server/plugins/org.eclipse.equinox.launcher_1.7.0.v20250519-0528.jar -configuration /home/ubuntu/.cursor-server/data/User/globalStorage/redhat.java/1.44.2025071108/config_ss_linux -data /home/ubuntu/.cursor-server/data/User/workspaceStorage/dc280d672a881ce53630fde44a881223/redhat.java/ss_ws --pipe=/tmp/lsp-25612ff36b8deb18730005f97f5fb90a.sock
+java_class_path (initial): /home/ubuntu/.cursor-server/extensions/redhat.java-1.44.2025071108/server/plugins/org.eclipse.equinox.launcher_1.7.0.v20250519-0528.jar
+Launcher Type: SUN_STANDARD
+
+[Global flags]
+     intx CICompilerCount                          = 3                                         {product} {ergonomic}
+     uint ConcGCThreads                            = 1                                         {product} {ergonomic}
+     uint G1ConcRefinementThreads                  = 4                                         {product} {ergonomic}
+   size_t G1HeapRegionSize                         = 8388608                                   {product} {ergonomic}
+    uintx GCDrainStackTargetSize                   = 64                                        {product} {ergonomic}
+   size_t InitialHeapSize                          = 17179869184                               {product} {command line}
+   size_t MarkStackSize                            = 4194304                                   {product} {ergonomic}
+   size_t MaxHeapSize                              = 17179869184                               {product} {command line}
+   size_t MinHeapDeltaBytes                        = 8388608                                   {product} {ergonomic}
+   size_t MinHeapSize                              = 17179869184                               {product} {command line}
+    uintx NonNMethodCodeHeapSize                   = 5832780                                {pd product} {ergonomic}
+    uintx NonProfiledCodeHeapSize                  = 122912730                              {pd product} {ergonomic}
+    uintx ProfiledCodeHeapSize                     = 122912730                              {pd product} {ergonomic}
+    uintx ReservedCodeCacheSize                    = 251658240                              {pd product} {ergonomic}
+     bool SegmentedCodeCache                       = true                                      {product} {ergonomic}
+   size_t SoftMaxHeapSize                          = 17179869184                            {manageable} {ergonomic}
+     bool UseCompressedOops                        = true                           {product lp64_product} {ergonomic}
+     bool UseG1GC                                  = true                                      {product} {ergonomic}
+
+Logging:
+Log output configuration:
+ #0: stdout all=off uptime,level,tags foldmultilines=false
+ #1: stderr all=off uptime,level,tags foldmultilines=false
+
+Environment Variables:
+PATH=/home/ubuntu/.cursor-server/bin/a8e95743c5268be73767c46944a71f4465d05c90/bin/remote-cli:/home/ubuntu/.nvm/versions/node/v22.16.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+SHELL=/bin/bash
+LANG=en_US.UTF-8
+LC_ALL=en_US.UTF-8
+TERM=xterm-256color
+
+Active Locale:
+LC_ALL=C
+LC_COLLATE=C
+LC_CTYPE=C
+LC_MESSAGES=C
+LC_MONETARY=C
+LC_NUMERIC=C
+LC_TIME=C
+
+Signal Handlers:
+   SIGSEGV: crash_handler in libjvm.so, mask=11100100010111111101111111111110, flags=SA_RESTART|SA_SIGINFO, unblocked
+    SIGBUS: crash_handler in libjvm.so, mask=11100100010111111101111111111110, flags=SA_RESTART|SA_SIGINFO, unblocked
+    SIGFPE: crash_handler in libjvm.so, mask=11100100010111111101111111111110, flags=SA_RESTART|SA_SIGINFO, unblocked
+   SIGPIPE: javaSignalHandler in libjvm.so, mask=11100100010111111101111111111110, flags=SA_RESTART|SA_SIGINFO, blocked
+   SIGXFSZ: javaSignalHandler in libjvm.so, mask=11100100010111111101111111111110, flags=SA_RESTART|SA_SIGINFO, blocked
+    SIGILL: crash_handler in libjvm.so, mask=11100100010111111101111111111110, flags=SA_RESTART|SA_SIGINFO, unblocked
+   SIGUSR2: SR_handler in libjvm.so, mask=00000000000000000000000000000000, flags=SA_RESTART|SA_SIGINFO, blocked
+    SIGHUP: SIG_DFL, mask=00000000000000000000000000000000, flags=none, blocked
+    SIGINT: SIG_DFL, mask=00000000000000000000000000000000, flags=none, blocked
+   SIGTERM: SIG_DFL, mask=00000000000000000000000000000000, flags=none, blocked
+   SIGQUIT: UserHandler in libjvm.so, mask=11100100010111111101111111111110, flags=SA_RESTART|SA_SIGINFO, blocked
+   SIGTRAP: crash_handler in libjvm.so, mask=11100100010111111101111111111110, flags=SA_RESTART|SA_SIGINFO, unblocked
+
+
+Periodic native trim disabled
+
+---------------  S Y S T E M  ---------------
+
+OS:
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=25.04
+DISTRIB_CODENAME=plucky
+DISTRIB_DESCRIPTION="Ubuntu 25.04"
+uname: Linux 6.12.8+ #11 SMP PREEMPT_DYNAMIC Sun Jul  6 04:56:39 UTC 2025 x86_64
+OS uptime: 0 days 0:21 hours
+libc: glibc 2.41 NPTL 2.41 
+rlimit (soft/hard): STACK 8192k/infinity , CORE infinity/infinity , NPROC infinity/infinity , NOFILE 1048576/1048576 , AS infinity/infinity , CPU infinity/infinity , DATA infinity/infinity , FSIZE infinity/infinity , MEMLOCK 8192k/8192k
+load average: 1.91 1.20 0.83
+
+/proc/meminfo:
+MemTotal:       16383644 kB
+MemFree:         7852376 kB
+MemAvailable:   14931300 kB
+Buffers:          121460 kB
+Cached:          6707948 kB
+SwapCached:            0 kB
+Active:           350980 kB
+Inactive:        7129532 kB
+Active(anon):        344 kB
+Inactive(anon):   651716 kB
+Active(file):     350636 kB
+Inactive(file):  6477816 kB
+Unevictable:           0 kB
+Mlocked:               0 kB
+SwapTotal:             0 kB
+SwapFree:              0 kB
+Zswap:                 0 kB
+Zswapped:              0 kB
+Dirty:            466984 kB
+Writeback:             0 kB
+AnonPages:        650908 kB
+Mapped:           443032 kB
+Shmem:              1196 kB
+KReclaimable:     587380 kB
+Slab:             673876 kB
+SReclaimable:     587380 kB
+SUnreclaim:        86496 kB
+KernelStack:        4708 kB
+PageTables:        15596 kB
+SecPageTables:         0 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:     8191820 kB
+Committed_AS:    2925108 kB
+VmallocTotal:   34359738367 kB
+VmallocUsed:        8408 kB
+VmallocChunk:          0 kB
+Percpu:             1680 kB
+AnonHugePages:         0 kB
+ShmemHugePages:        0 kB
+ShmemPmdMapped:        0 kB
+FileHugePages:         0 kB
+FilePmdMapped:         0 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+Hugetlb:               0 kB
+DirectMap4k:       16384 kB
+DirectMap2M:     3129344 kB
+DirectMap1G:    13631488 kB
+
+/sys/kernel/mm/transparent_hugepage/enabled: always [madvise] never
+/sys/kernel/mm/transparent_hugepage/hpage_pmd_size: 2097152
+/sys/kernel/mm/transparent_hugepage/defrag (defrag/compaction efforts parameter): always defer defer+madvise [madvise] never
+
+Process Memory:
+Virtual Size: 17742800K (peak: 17742800K)
+Resident Set Size: 21160K (peak: 21160K) (anon: 7296K, file: 13864K, shmem: 0K)
+Swapped out: 0K
+C-Heap outstanding allocations: 14268K, retained: 599K
+glibc malloc tunables: (default)
+
+/proc/sys/kernel/threads-max (system-wide limit on the number of threads): 127957
+/proc/sys/vm/max_map_count (maximum number of memory map areas a process may have): 65530
+/proc/sys/vm/swappiness (control to define how aggressively the kernel swaps out anonymous memory): 60
+/proc/sys/kernel/pid_max (system-wide limit on number of process identifiers): 4194304
+
+container (cgroup) information:
+container_type: cgroupv1
+cpu_cpuset_cpus: 0-3
+cpu_memory_nodes: 0
+active_processor_count: 4
+cpu_quota: 400000
+cpu_period: 100000
+cpu_shares: no shares
+memory_limit_in_bytes: unlimited
+memory_and_swap_limit_in_bytes: unlimited
+memory_soft_limit_in_bytes: unlimited
+memory_usage_in_bytes: 1815896 k
+memory_max_usage_in_bytes: 1877108 k
+kernel_memory_limit_in_bytes: unlimited
+kernel_memory_usage_in_bytes: 113292 k
+kernel_memory_max_usage_in_bytes: 115440 k
+maximum number of tasks: unlimited
+current number of tasks: 141
+
+KVM virtualization detected
+Steal ticks since vm start: 0
+Steal ticks percentage since vm start:  0.000
+
+CPU: total 4 (initial active 4) (4 cores per cpu, 1 threads per core) family 6 model 207 stepping 2 microcode 0x1, cx8, cmov, fxsr, mmx, 3dnowpref, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, lzcnt, tsc, tscinvbit, avx, avx2, aes, erms, clmul, bmi1, bmi2, adx, avx512f, avx512dq, avx512cd, avx512bw, avx512vl, sha, fma, vzeroupper, avx512_vpopcntdq, avx512_vpclmulqdq, avx512_vaes, avx512_vnni, clflush, clflushopt, clwb, avx512_vbmi2, avx512_vbmi, hv, serialize, rdtscp, rdpid, fsrm, gfni, avx512_bitalg, f16c, pku, ospke, avx512_ifma
+CPU Model and flags from /proc/cpuinfo:
+model name	: Intel(R) Xeon(R) Processor
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc pebs bts rep_good nopl xtopology nonstop_tsc cpuid tsc_known_freq pni pclmulqdq dtes64 ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch cpuid_fault ssbd ibrs ibpb stibp ibrs_enhanced fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves avx_vnni avx512_bf16 wbnoinvd arat avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid bus_lock_detect cldemote movdiri movdir64b fsrm md_clear serialize tsxldtrk amx_bf16 avx512_fp16 amx_tile amx_int8 flush_l1d arch_capabilities
+
+Online cpus: 0-3
+Offline cpus: 
+BIOS frequency limitation: <Not Available>
+Frequency switch latency (ns): <Not Available>
+Available cpu frequencies: <Not Available>
+Current governor: <Not Available>
+Core performance/turbo boost: <Not Available>
+
+Memory: 4k page, physical 16383644k(14931300k free), swap 0k(0k free)
+Page Sizes: 4k
+
+vm_info: OpenJDK 64-Bit Server VM (21.0.7+6-LTS) for linux-amd64 JRE (21.0.7+6-LTS), built on 2025-04-15T00:00:00Z by "admin" with gcc 11.3.0
+
+END.
